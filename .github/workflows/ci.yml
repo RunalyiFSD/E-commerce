@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - main
+      - dev
       - develop
   pull_request:
     branches:
       - main
+      - dev
       - develop
 
 jobs:
@@ -66,3 +68,6 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Security audit
+        run: npm audit --audit-level=high || true
