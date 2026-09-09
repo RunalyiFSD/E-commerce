@@ -25,8 +25,11 @@ FROM nginx:1.27-alpine
 # Copy built assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy custom Nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Set default backend URL (can be overridden on Render via environment variable)
+ENV BACKEND_URL=http://backend:5000
+
+# Copy custom Nginx configuration template (Nginx automatically processes .template files with envsubst)
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 # Expose HTTP port 80
 EXPOSE 80
