@@ -310,6 +310,18 @@ The workflows assume `frontend/` and `backend/` directories and must be aligned 
 - Committed and force-pushed full updated application codebase to `main` branch.
 - Repository is synchronized and clean.
 
+## Entry 020
+
+**Date:** 2026-09-09
+
+### Force-Pushed Codebase to `dev` Branch
+
+- Switched local repository branch to `dev`.
+- Executed force push (`git push -u origin dev --force`) to remote repository `https://github.com/RunalyiFSD/E-commerce.git`.
+- Replaced existing remote data on `dev` branch with the latest codebase.
+- Both `main` and `dev` branches are now fully synchronized on GitHub.
+
+
 
 
 
