@@ -3,21 +3,23 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 const variantStyles = {
-  primary: 'bg-amazon-blue hover:bg-amazon-light_blue text-white shadow-sm focus:ring-slate-800',
-  amber: 'bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold shadow-sm focus:ring-amber-400 border border-amber-500/30',
-  orange: 'bg-amazon-orange hover:bg-amazon-gold text-white font-semibold shadow-sm focus:ring-orange-400',
-  secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 focus:ring-slate-400',
-  outline: 'bg-transparent border border-slate-300 hover:bg-slate-50 text-slate-700 focus:ring-slate-400',
-  ghost: 'bg-transparent hover:bg-slate-100 text-slate-600 focus:ring-slate-400',
-  danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-sm focus:ring-rose-500',
-  success: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm focus:ring-emerald-500',
+  primary: 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-500/20 focus:ring-indigo-500 font-semibold',
+  amber: 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-500/20 focus:ring-indigo-500 font-semibold', // backward compat
+  orange: 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-500/25 font-bold',
+  accent: 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-sm shadow-emerald-500/20 font-semibold',
+  secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 focus:ring-slate-400 font-medium',
+  outline: 'bg-white/80 backdrop-blur-xs border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 focus:ring-indigo-400 font-medium',
+  ghost: 'bg-transparent hover:bg-slate-100/80 text-slate-600 hover:text-slate-900 focus:ring-slate-300 font-medium',
+  danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-sm focus:ring-rose-500 font-semibold',
+  success: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm focus:ring-emerald-500 font-semibold',
 };
 
 const sizeStyles = {
-  sm: 'px-3 py-1.5 text-xs rounded-md gap-1.5',
-  md: 'px-4 py-2 text-sm rounded-lg gap-2',
-  lg: 'px-5 py-2.5 text-base rounded-xl gap-2.5',
-  icon: 'p-2 rounded-lg',
+  xs: 'px-2.5 py-1 text-[11px] rounded-lg gap-1',
+  sm: 'px-3.5 py-1.5 text-xs rounded-xl gap-1.5',
+  md: 'px-4 py-2 text-sm rounded-xl gap-2',
+  lg: 'px-5 py-2.5 text-base rounded-2xl gap-2.5',
+  icon: 'p-2 rounded-xl',
 };
 
 export function Button({

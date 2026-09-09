@@ -10,7 +10,15 @@ export const createRateLimiter = ({
   message = 'Too many requests, please try again later.',
 } = {}) => {
   return (req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
+
+    // In development mode, don't throttle localhost requests
+    const isDev = process.env.NODE_ENV !== 'production';
+    const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+    if (isDev && isLocalhost) {
+      return next();
+    }
+
     const now = Date.now();
 
     if (!ipStore.has(ip)) {

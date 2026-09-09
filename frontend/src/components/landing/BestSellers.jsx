@@ -11,12 +11,12 @@ export function BestSellers({ onAddToCart }) {
     <section className="mb-12 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-xs uppercase font-extrabold text-amber-600 tracking-wider">Top Rated Demand</span>
+          <span className="text-xs uppercase font-extrabold text-brand-600 tracking-wider">Top Rated Demand</span>
           <h2 className="text-2xl font-black text-slate-900 mt-0.5">Best Sellers</h2>
         </div>
         <Link
           to="/products"
-          className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 hover:underline"
+          className="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1 hover:underline"
         >
           View Rankings <ArrowRight className="w-3.5 h-3.5" />
         </Link>

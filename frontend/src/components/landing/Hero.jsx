@@ -12,8 +12,8 @@ const HERO_SLIDES = [
     badge: 'Deal of the Week',
     buttonText: 'Shop Electronics',
     link: '/products?category=Electronics',
-    bgGradient: 'from-slate-950 via-amazon-blue to-slate-900',
-    accentColor: 'text-amber-400',
+    bgGradient: 'from-slate-950 via-indigo-950/80 to-slate-900',
+    accentColor: 'text-brand-400',
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
   },
   {
@@ -23,7 +23,7 @@ const HERO_SLIDES = [
     badge: 'Top Tech Choice',
     buttonText: 'Discover Laptops',
     link: '/products?category=Electronics',
-    bgGradient: 'from-blue-950 via-slate-900 to-amazon-light_blue',
+    bgGradient: 'from-slate-950 via-slate-900 to-indigo-950',
     accentColor: 'text-sky-400',
     image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80',
   },
@@ -34,7 +34,7 @@ const HERO_SLIDES = [
     badge: 'Trending Collection',
     buttonText: 'Explore Home',
     link: '/products?category=Home%20%26%20Kitchen',
-    bgGradient: 'from-slate-900 via-indigo-950 to-slate-950',
+    bgGradient: 'from-slate-900 via-violet-950 to-slate-950',
     accentColor: 'text-emerald-400',
     image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&q=80',
   },
@@ -56,24 +56,24 @@ export function Hero() {
   const slide = HERO_SLIDES[currentSlide];
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-xl mb-12">
+    <div className="relative overflow-hidden rounded-3xl bg-slate-950 text-white shadow-2xl mb-12 border border-slate-800/80">
       {/* Background Gradient Layer */}
       <div className={`absolute inset-0 bg-gradient-to-r ${slide.bgGradient} transition-all duration-700 opacity-95`} />
 
       {/* Decorative ambient blur rings */}
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-500/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-violet-500/15 rounded-full blur-3xl pointer-events-none" />
 
       {/* Main Slide Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12 sm:py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[420px]">
         {/* Left Text Banner */}
         <div className="lg:col-span-7 space-y-6">
           <div className="flex items-center gap-2">
-            <Badge variant="amber" size="md" showDot>
+            <Badge variant="brand" size="md" showDot>
               {slide.badge}
             </Badge>
             <span className="text-xs text-slate-300 flex items-center gap-1 font-medium">
-              <Zap className="w-3.5 h-3.5 text-amber-400" /> Fast Delivery
+              <Zap className="w-3.5 h-3.5 text-brand-400" /> Fast Delivery
             </span>
           </div>
 
@@ -88,10 +88,10 @@ export function Hero() {
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <Link to={slide.link}>
               <Button
-                variant="amber"
+                variant="primary"
                 size="lg"
                 rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="font-bold shadow-lg shadow-amber-500/20"
+                className="font-bold shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50"
               >
                 {slide.buttonText}
               </Button>
@@ -100,7 +100,7 @@ export function Hero() {
               <Button
                 variant="outline"
                 size="lg"
-                className="text-white border-slate-700 hover:bg-white/10"
+                className="text-white border-slate-700 hover:bg-white/10 hover:border-slate-500"
               >
                 Browse Catalog
               </Button>
@@ -110,7 +110,7 @@ export function Hero() {
 
         {/* Right Image Feature */}
         <div className="lg:col-span-5 flex justify-center">
-          <div className="relative w-full max-w-md aspect-4/3 rounded-2xl overflow-hidden glass-panel border border-white/20 shadow-2xl p-4 group">
+          <div className="relative w-full max-w-md aspect-4/3 rounded-2xl overflow-hidden glass-panel border border-white/20 shadow-2xl p-3 group">
             <img
               src={slide.image}
               alt={slide.title}
@@ -124,14 +124,14 @@ export function Hero() {
       {/* Carousel Controls */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white backdrop-blur-xs transition-all opacity-80 hover:opacity-100"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white backdrop-blur-md transition-all opacity-80 hover:opacity-100 border border-slate-700/60"
         aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white backdrop-blur-xs transition-all opacity-80 hover:opacity-100"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white backdrop-blur-md transition-all opacity-80 hover:opacity-100 border border-slate-700/60"
         aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6" />
@@ -144,7 +144,7 @@ export function Hero() {
             key={idx}
             onClick={() => setCurrentSlide(idx)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              currentSlide === idx ? 'w-8 bg-amber-400' : 'w-2 bg-white/40 hover:bg-white/70'
+              currentSlide === idx ? 'w-8 bg-brand-500' : 'w-2 bg-white/40 hover:bg-white/70'
             }`}
             aria-label={`Go to slide ${idx + 1}`}
           />

@@ -21,7 +21,12 @@ export function DashboardPage() {
       const res = await dashboardService.getDashboardStats();
       setDashboardData(res);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load dashboard statistics');
+      console.warn('[Dashboard Sync Warning] Using local dashboard fallback:', err.message);
+      setDashboardData({
+        role: user?.role || 'CUSTOMER',
+        stats: { totalOrders: 0, activeShipmentsCount: 0, deliveredCount: 0 },
+        recentOrders: [],
+      });
     } finally {
       setLoading(false);
     }

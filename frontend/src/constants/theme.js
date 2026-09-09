@@ -8,6 +8,8 @@ export const ROLES = {
   CUSTOMER: 'CUSTOMER',
 };
 
+export const CURRENCY_SYMBOL = '₹';
+
 export const ORDER_STATUS = {
   PLACED: 'PLACED',
   CONFIRMED: 'CONFIRMED',
@@ -50,16 +52,16 @@ export const ORDER_STATUS_CONFIG = {
   },
   [ORDER_STATUS.PACKED]: {
     label: 'Packed',
-    variant: 'amber',
+    variant: 'brand',
     description: 'Order packed and labeled for courier pickup',
-    colorClass: 'bg-amber-50 text-amber-800 border-amber-200',
+    colorClass: 'bg-indigo-50 text-indigo-800 border-indigo-200',
     stepIndex: 3,
   },
   [ORDER_STATUS.SHIPPED]: {
     label: 'Shipped',
-    variant: 'amber',
+    variant: 'brand',
     description: 'Package handed to courier partner',
-    colorClass: 'bg-amber-100 text-amber-900 border-amber-300',
+    colorClass: 'bg-indigo-100 text-indigo-900 border-indigo-300',
     stepIndex: 4,
   },
   [ORDER_STATUS.IN_TRANSIT]: {

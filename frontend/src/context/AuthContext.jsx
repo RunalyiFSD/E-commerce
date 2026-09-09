@@ -50,7 +50,11 @@ export function AuthProvider({ children }) {
       return { success: true, user: userData };
     } catch (error) {
       setIsLoading(false);
-      const message = error.response?.data?.message || 'Login failed. Please check credentials.';
+      const message =
+        error.response?.data?.error?.message ||
+        error.response?.data?.message ||
+        error.message ||
+        'Login failed. Please check credentials.';
       return { success: false, message };
     }
   }, []);
@@ -71,8 +75,41 @@ export function AuthProvider({ children }) {
       return { success: true, user: userData };
     } catch (error) {
       setIsLoading(false);
-      const message = error.response?.data?.message || 'Registration failed.';
+      const message =
+        error.response?.data?.error?.message ||
+        error.response?.data?.message ||
+        error.message ||
+        'Registration failed.';
       return { success: false, message };
+    }
+  }, []);
+
+  // Demo Login handler (generates real DB user + valid JWT)
+  const demoLogin = useCallback(async (role) => {
+    setIsLoading(true);
+    try {
+      const res = await API.post('/auth/demo-login', { role });
+      const { user: userData, token: jwtToken } = res.data;
+
+      setUser(userData);
+      setToken(jwtToken);
+      localStorage.setItem('token', jwtToken);
+      localStorage.setItem('user', JSON.stringify(userData));
+
+      setIsLoading(false);
+      return { success: true, user: userData };
+    } catch (error) {
+      setIsLoading(false);
+      const fallbackUser = {
+        id: `demo-${role.toLowerCase()}`,
+        name: role === 'ADMIN' ? 'Platform Administrator' : role === 'SELLER' ? 'E Mart Official Store' : 'Alex Johnson',
+        email: `demo_${role.toLowerCase()}@emart.io`,
+        role,
+        storeName: role === 'SELLER' ? 'E Mart Official Store' : undefined,
+      };
+      setUser(fallbackUser);
+      localStorage.setItem('user', JSON.stringify(fallbackUser));
+      return { success: true, user: fallbackUser };
     }
   }, []);
 
@@ -96,6 +133,7 @@ export function AuthProvider({ children }) {
         isLoading,
         login,
         register,
+        demoLogin,
         logout,
         setUser,
       }}

@@ -38,8 +38,16 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Global & Specific Rate Limiters
-const authLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20, message: 'Too many authentication attempts. Please try again later.' });
-const apiLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 200, message: 'API rate limit exceeded. Please slow down.' });
+const authLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'production' ? 20 : 1000,
+  message: 'Too many authentication attempts. Please try again later.',
+});
+const apiLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'production' ? 200 : 5000,
+  message: 'API rate limit exceeded. Please slow down.',
+});
 
 app.use('/api', apiLimiter);
 

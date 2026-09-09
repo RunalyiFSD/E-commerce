@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import OrderStatusBadge from '../order/OrderStatusBadge';
 import FulfillmentModal from '../seller/FulfillmentModal';
 import Button from '../common/Button';
-import { DollarSign, ShoppingBag, Package, AlertTriangle, Truck, Plus, ArrowRight } from 'lucide-react';
+import { IndianRupee, ShoppingBag, Package, AlertTriangle, Truck, Plus, ArrowRight } from 'lucide-react';
 
 export function SellerDashboard({ data, onRefresh }) {
   const { stats = {}, lowStockProducts = [], recentOrders = [] } = data;
@@ -46,9 +46,9 @@ export function SellerDashboard({ data, onRefresh }) {
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-slate-500 uppercase">Store Revenue</span>
-            <DollarSign className="w-5 h-5 text-emerald-500" />
+            <IndianRupee className="w-5 h-5 text-emerald-500" />
           </div>
-          <p className="text-3xl font-black text-emerald-700">${stats.totalRevenue?.toFixed(2) || '0.00'}</p>
+          <p className="text-3xl font-black text-emerald-700">₹{stats.totalRevenue?.toFixed(2) || '0.00'}</p>
           <p className="text-[11px] text-slate-500 mt-1">Gross sales completed</p>
         </div>
 
@@ -130,7 +130,7 @@ export function SellerDashboard({ data, onRefresh }) {
                     <OrderStatusBadge status={ord.status} size="sm" />
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Customer: <span className="font-semibold text-slate-800">{ord.customer?.name || 'Customer'}</span> &bull; Items: {ord.items?.length} &bull; Total: ${ord.pricing?.total?.toFixed(2)}
+                    Customer: <span className="font-semibold text-slate-800">{ord.customer?.name || 'Customer'}</span> &bull; Items: {ord.items?.length} &bull; Total: ₹{ord.pricing?.total?.toFixed(2)}
                   </p>
                 </div>
 

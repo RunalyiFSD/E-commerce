@@ -40,7 +40,7 @@ export function ProductCard({
         {/* Badges Overlay */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.badgeText && (
-            <Badge variant="amber" size="sm">
+            <Badge variant="brand" size="sm">
               {product.badgeText}
             </Badge>
           )}
@@ -75,7 +75,7 @@ export function ProductCard({
           </div>
 
           {/* Product Title */}
-          <h4 className="text-sm font-bold text-slate-900 line-clamp-2 leading-snug hover:text-amber-600 transition-colors cursor-pointer">
+          <h4 className="text-sm font-bold text-slate-900 line-clamp-2 leading-snug hover:text-brand-600 transition-colors cursor-pointer">
             {product.name}
           </h4>
 
@@ -94,11 +94,11 @@ export function ProductCard({
           <div>
             <div className="flex items-baseline gap-1.5">
               <span className="text-base font-extrabold text-slate-900">
-                ${hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
+                ₹{hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
               </span>
               {hasDiscount && (
                 <span className="text-xs text-slate-400 line-through">
-                  ${product.price.toFixed(2)}
+                  ₹{product.price.toFixed(2)}
                 </span>
               )}
             </div>
@@ -108,7 +108,7 @@ export function ProductCard({
           </div>
 
           <Button
-            variant="amber"
+            variant="primary"
             size="sm"
             onClick={() => onAddToCart && onAddToCart(product)}
             leftIcon={<ShoppingCart className="w-3.5 h-3.5" />}

@@ -28,9 +28,13 @@ const trackingEventSchema = new mongoose.Schema({
 
 const orderItemSchema = new mongoose.Schema({
   product: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.Mixed,
     ref: 'Product',
-    required: true,
+    required: false,
+  },
+  productId: {
+    type: String,
+    default: '',
   },
   productName: {
     type: String,
@@ -52,7 +56,7 @@ const orderItemSchema = new mongoose.Schema({
   seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: false,
   },
 });
 

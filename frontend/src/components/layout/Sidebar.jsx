@@ -67,7 +67,7 @@ export function Sidebar({ role = 'CUSTOMER', className, onItemClick }) {
           <div className="flex items-center gap-2 mt-1">
             <span className="text-sm font-bold text-slate-800">{role} Panel</span>
             <Badge
-              variant={role === 'ADMIN' ? 'danger' : role === 'SELLER' ? 'amber' : 'info'}
+              variant={role === 'ADMIN' ? 'danger' : role === 'SELLER' ? 'brand' : 'info'}
               size="sm"
             >
               {role}
@@ -90,7 +90,7 @@ export function Sidebar({ role = 'CUSTOMER', className, onItemClick }) {
                 cn(
                   'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150',
                   isActive
-                    ? 'bg-amber-50 text-amber-900 border border-amber-200 shadow-2xs font-bold'
+                    ? 'bg-brand-50 text-brand-950 border border-brand-200 shadow-2xs font-bold'
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 )
               }

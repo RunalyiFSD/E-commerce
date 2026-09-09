@@ -16,9 +16,11 @@ import OrderCard from '../components/order/OrderCard';
 import TrackingTimeline from '../components/tracking/TrackingTimeline';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { Search, Mail, Lock, ShoppingCart, Plus, CheckCircle, Trash2, ExternalLink } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 function ShowcaseContent() {
   const { addToast } = useToast();
+  const { addToCart } = useCart();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [role, setRole] = useState('CUSTOMER');
 
@@ -26,7 +28,7 @@ function ShowcaseContent() {
     { header: 'Order ID', key: 'id', render: (row) => <span className="font-bold text-slate-800">{row.id}</span> },
     { header: 'Customer', key: 'customer' },
     { header: 'Status', key: 'status', render: (row) => <OrderStatusBadge status={row.status} size="sm" /> },
-    { header: 'Amount', key: 'amount', render: (row) => <span className="font-mono font-semibold">${row.amount}</span> },
+    { header: 'Amount', key: 'amount', render: (row) => <span className="font-mono font-semibold">₹{row.amount}</span> },
   ];
 
   const demoTableData = [
@@ -164,7 +166,10 @@ function ShowcaseContent() {
         <h2 className="text-sm uppercase font-extrabold text-slate-400 tracking-wider">6. Product Card</h2>
         <div className="max-w-xs">
           <ProductCard
-            onAddToCart={(p) => addToast({ message: `Added ${p.name} to cart`, type: 'success' })}
+            onAddToCart={(p) => {
+              addToCart(p);
+              addToast({ message: `Added ${p.name} to cart`, type: 'success' });
+            }}
           />
         </div>
       </section>

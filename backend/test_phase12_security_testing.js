@@ -43,6 +43,8 @@ async function runPhase12Tests() {
   try {
     await mongoose.connect(MONGODB_URI);
     console.log('✅ Connected to MongoDB database\n');
+    await Product.syncIndexes();
+    await User.syncIndexes();
 
     // ---------------------------------------------------------------
     // 1. AUTHENTICATION SECURITY TESTS (Rule 6)

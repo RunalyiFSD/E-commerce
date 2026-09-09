@@ -54,7 +54,7 @@ export function ReturnRequestModal({ isOpen, onClose, order, onReturnSubmitted }
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-3.5 flex items-start gap-2 text-xs text-amber-900">
           <RotateCcw className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <span>
-            Once submitted, your return request will be reviewed by the merchant. Approved returns receive a full refund of <strong>${order.pricing?.total?.toFixed(2)}</strong>.
+            Once submitted, your return request will be reviewed by the merchant. Approved returns receive a full refund of <strong>₹{order.pricing?.total?.toFixed(2)}</strong>.
           </span>
         </div>
 

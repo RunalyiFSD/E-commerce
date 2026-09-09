@@ -188,7 +188,7 @@ export function OrderTrackingPage() {
                       <p className="text-slate-400 text-[11px]">Qty: {item.quantity}</p>
                     </div>
                   </div>
-                  <span className="font-bold text-slate-900">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="font-bold text-slate-900">₹{(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>

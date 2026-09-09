@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import OrderStatusBadge from '../order/OrderStatusBadge';
 import FulfillmentModal from '../seller/FulfillmentModal';
 import Button from '../common/Button';
-import { ShieldCheck, DollarSign, Users, Store, Package, Layers, Truck, AlertTriangle, CheckCircle, ExternalLink } from 'lucide-react';
+import { ShieldCheck, IndianRupee, Users, Store, Package, Layers, Truck, AlertTriangle, CheckCircle, ExternalLink } from 'lucide-react';
 
 export function AdminDashboard({ data, onRefresh }) {
   const { stats = {}, recentOrders = [] } = data;
@@ -47,9 +47,9 @@ export function AdminDashboard({ data, onRefresh }) {
         <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] font-bold text-slate-500 uppercase">Platform GMV</span>
-            <DollarSign className="w-4 h-4 text-emerald-500" />
+            <IndianRupee className="w-4 h-4 text-emerald-500" />
           </div>
-          <p className="text-xl font-black text-emerald-700">${stats.totalGMV?.toFixed(2) || '0.00'}</p>
+          <p className="text-xl font-black text-emerald-700">₹{stats.totalGMV?.toFixed(2) || '0.00'}</p>
           <p className="text-[10px] text-slate-400">Total gross volume</p>
         </div>
 
@@ -166,7 +166,7 @@ export function AdminDashboard({ data, onRefresh }) {
                     <OrderStatusBadge status={ord.status} size="sm" />
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Customer: <span className="font-semibold text-slate-800">{ord.customer?.name || 'User'}</span> &bull; Items: {ord.items?.length} &bull; Total: ${ord.pricing?.total?.toFixed(2)}
+                    Customer: <span className="font-semibold text-slate-800">{ord.customer?.name || 'User'}</span> &bull; Items: {ord.items?.length} &bull; Total: ₹{ord.pricing?.total?.toFixed(2)}
                   </p>
                 </div>
 

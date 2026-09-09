@@ -34,7 +34,7 @@ function CartPageContent() {
     e.preventDefault();
     if (promoCode.trim().toUpperCase() === 'SAVE10') {
       setAppliedPromo({ code: 'SAVE10', discount: 10 });
-      addToast({ message: 'Promo code SAVE10 applied! $10 discount saved.', type: 'success' });
+      addToast({ message: 'Promo code SAVE10 applied! ₹10 discount saved.', type: 'success' });
     } else {
       addToast({ message: 'Invalid promo code. Try "SAVE10"', type: 'error' });
     }
@@ -50,11 +50,11 @@ function CartPageContent() {
         {/* Breadcrumb Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <span className="text-xs uppercase font-extrabold text-amber-600 tracking-wider">Shopping Basket</span>
+            <span className="text-xs uppercase font-extrabold text-brand-600 tracking-wider">Shopping Basket</span>
             <h1 className="text-2xl font-black text-slate-900 mt-0.5">Your Cart ({itemCount} items)</h1>
           </div>
 
-          <Link to="/products" className="text-xs font-bold text-slate-600 hover:text-amber-600 flex items-center gap-1.5">
+          <Link to="/products" className="text-xs font-bold text-slate-600 hover:text-brand-600 flex items-center gap-1.5">
             <ArrowLeft className="w-4 h-4" /> Continue Shopping
           </Link>
         </div>
@@ -63,11 +63,11 @@ function CartPageContent() {
           <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center shadow-xs">
             <EmptyState
               icon={ShoppingCart}
-              title="Your E-Commerce Cart is empty"
+              title="Your Shopping Cart is empty"
               description="Discover thousands of deals and top-rated products waiting for you."
               action={
                 <Link to="/products">
-                  <Button variant="amber" size="lg" className="font-bold shadow-md">
+                  <Button variant="primary" size="lg" className="font-bold shadow-md shadow-brand-500/25">
                     Explore Today's Deals
                   </Button>
                 </Link>
@@ -95,16 +95,16 @@ function CartPageContent() {
                         </div>
 
                         <div className="min-w-0">
-                          <span className="text-[10px] uppercase font-bold text-amber-600">{product.category}</span>
+                          <span className="text-[10px] uppercase font-bold text-brand-600">{product.category}</span>
                           <h3 className="text-sm font-bold text-slate-900 truncate line-clamp-1">{product.name}</h3>
                           <p className="text-xs text-slate-400 mt-0.5">
                             Sold by <strong className="text-slate-700">{product.seller?.name || 'Authorized Store'}</strong>
                           </p>
 
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="text-base font-extrabold text-slate-900">${effectivePrice.toFixed(2)}</span>
+                            <span className="text-base font-extrabold text-slate-900">₹{effectivePrice.toFixed(2)}</span>
                             {product.discountPrice && (
-                              <span className="text-xs text-slate-400 line-through">${product.price.toFixed(2)}</span>
+                              <span className="text-xs text-slate-400 line-through">₹{product.price.toFixed(2)}</span>
                             )}
                           </div>
                         </div>
@@ -132,7 +132,7 @@ function CartPageContent() {
                         {/* Line Total & Delete */}
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-extrabold text-slate-900 min-w-[70px] text-right">
-                            ${(effectivePrice * quantity).toFixed(2)}
+                            ₹{(effectivePrice * quantity).toFixed(2)}
                           </span>
                           <button
                             onClick={() => removeFromCart(product.id || product._id)}
@@ -159,13 +159,13 @@ function CartPageContent() {
               <div className="space-y-2.5 text-xs">
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal ({itemCount} items)</span>
-                  <span className="font-semibold text-slate-900">${subtotal.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-900">₹{subtotal.toFixed(2)}</span>
                 </div>
 
                 {discountTotal > 0 && (
                   <div className="flex justify-between text-emerald-700 font-medium">
                     <span>Discount Savings</span>
-                    <span>-${discountTotal.toFixed(2)}</span>
+                    <span>-₹{discountTotal.toFixed(2)}</span>
                   </div>
                 )}
 
@@ -174,25 +174,25 @@ function CartPageContent() {
                   {shippingCost === 0 ? (
                     <span className="text-emerald-600 font-bold">FREE</span>
                   ) : (
-                    <span className="font-semibold text-slate-900">${shippingCost.toFixed(2)}</span>
+                    <span className="font-semibold text-slate-900">₹{shippingCost.toFixed(2)}</span>
                   )}
                 </div>
 
                 <div className="flex justify-between text-slate-600">
                   <span>Estimated Tax (8%)</span>
-                  <span className="font-semibold text-slate-900">${taxEstimate.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-900">₹{taxEstimate.toFixed(2)}</span>
                 </div>
 
                 {appliedPromo && (
-                  <div className="flex justify-between text-amber-700 font-bold pt-1">
+                  <div className="flex justify-between text-brand-700 font-bold pt-1">
                     <span>Promo ({appliedPromo.code})</span>
-                    <span>-${appliedPromo.discount.toFixed(2)}</span>
+                    <span>-₹{appliedPromo.discount.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline">
                   <span className="text-sm font-bold text-slate-900">Total Order Amount</span>
-                  <span className="text-xl font-black text-slate-900">${finalGrandTotal.toFixed(2)}</span>
+                  <span className="text-xl font-black text-slate-900">₹{finalGrandTotal.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -211,11 +211,11 @@ function CartPageContent() {
 
               {/* Checkout Action Button */}
               <Button
-                variant="amber"
+                variant="primary"
                 size="lg"
                 onClick={() => navigate('/checkout')}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="w-full font-bold shadow-md"
+                className="w-full font-bold shadow-md shadow-brand-500/25"
               >
                 Proceed to Checkout
               </Button>

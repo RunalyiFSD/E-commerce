@@ -3,7 +3,7 @@ import Modal from '../common/Modal';
 import Button from '../common/Button';
 import notificationService from '../../services/notificationService';
 import { useToast } from '../common/Toast';
-import { RotateCcw, CheckCircle, XCircle, DollarSign } from 'lucide-react';
+import { RotateCcw, CheckCircle, XCircle, IndianRupee } from 'lucide-react';
 
 export function ReturnReviewModal({ isOpen, onClose, order, onReviewProcessed }) {
   const toast = useToast();
@@ -19,7 +19,7 @@ export function ReturnReviewModal({ isOpen, onClose, order, onReviewProcessed })
     try {
       await notificationService.processReturn(order._id, { action, note });
       if (action === 'APPROVE') {
-        toast.success(`Return approved. Refund of $${order.pricing?.total?.toFixed(2)} processed for customer.`);
+        toast.success(`Return approved. Refund of ₹${order.pricing?.total?.toFixed(2)} processed for customer.`);
       } else {
         toast.info('Return request rejected.');
       }
@@ -45,7 +45,7 @@ export function ReturnReviewModal({ isOpen, onClose, order, onReviewProcessed })
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2">
           <div className="flex items-center justify-between font-bold text-slate-900 border-b border-slate-200/80 pb-2">
             <span>Customer: {order.customer?.name || order.customer?.email}</span>
-            <span className="text-amber-700 font-black">${order.pricing?.total?.toFixed(2)}</span>
+            <span className="text-amber-700 font-black">₹{order.pricing?.total?.toFixed(2)}</span>
           </div>
 
           <div className="text-slate-600">

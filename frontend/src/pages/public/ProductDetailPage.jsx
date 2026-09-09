@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, ShieldCheck, Truck, ShoppingCart, Zap, Store, ArrowLeft, Check, Heart, Share2 } from 'lucide-react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -8,17 +8,19 @@ import Badge from '../../components/common/Badge';
 import Card from '../../components/common/Card';
 import ToastProvider, { useToast } from '../../components/common/Toast';
 import { PRODUCTS } from '../../services/mockData';
+import { useCart } from '../../context/CartContext';
 
 function ProductDetailContent() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { addToast } = useToast();
+  const { addToCart } = useCart();
 
   // Find product by id or default to first product
   const product = PRODUCTS.find((p) => p.id === id || p.slug === id) || PRODUCTS[0];
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [cartCount, setCartCount] = useState(0);
 
   const hasDiscount = product.discountPrice && product.discountPrice < product.price;
   const discountPercent = hasDiscount
@@ -26,21 +28,26 @@ function ProductDetailContent() {
     : 0;
 
   const handleAddToCart = () => {
-    setCartCount((prev) => prev + quantity);
+    addToCart(product, quantity);
     addToast({
       message: `Added ${quantity} x "${product.name}" to cart!`,
       type: 'success',
     });
   };
 
+  const handleBuyNow = () => {
+    addToCart(product, quantity);
+    navigate('/checkout');
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <Navbar cartCount={cartCount} />
+      <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Back Link Breadcrumb */}
         <div className="flex items-center justify-between">
-          <Link to="/products" className="text-xs font-bold text-slate-600 hover:text-amber-600 flex items-center gap-1.5 transition-colors">
+          <Link to="/products" className="text-xs font-bold text-slate-600 hover:text-brand-600 flex items-center gap-1.5 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Products Catalog
           </Link>
 
@@ -59,7 +66,7 @@ function ProductDetailContent() {
               />
               {product.badgeText && (
                 <div className="absolute top-4 left-4">
-                  <Badge variant="amber" size="md">{product.badgeText}</Badge>
+                  <Badge variant="brand" size="md">{product.badgeText}</Badge>
                 </div>
               )}
             </div>
@@ -72,7 +79,7 @@ function ProductDetailContent() {
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
                     className={`w-16 h-16 rounded-xl border-2 overflow-hidden bg-slate-50 transition-all p-1 ${
-                      activeImageIndex === idx ? 'border-amber-500 ring-2 ring-amber-500/20 scale-105' : 'border-slate-200 opacity-70 hover:opacity-100'
+                      activeImageIndex === idx ? 'border-brand-500 ring-2 ring-brand-500/20 scale-105' : 'border-slate-200 opacity-70 hover:opacity-100'
                     }`}
                   >
                     <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-contain" />
@@ -87,7 +94,7 @@ function ProductDetailContent() {
             <div>
               {/* Category & Seller Tag */}
               <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-                <span className="uppercase font-bold tracking-wider text-amber-600">{product.category}</span>
+                <span className="uppercase font-bold tracking-wider text-brand-600">{product.category}</span>
                 <span className="flex items-center gap-1">
                   <Store className="w-3.5 h-3.5 text-slate-400" /> Sold by <strong className="text-slate-800">{product.seller?.name}</strong>
                 </span>
@@ -114,11 +121,11 @@ function ProductDetailContent() {
               {/* Price Banner */}
               <div className="mt-6 p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-baseline gap-3">
                 <span className="text-3xl font-black text-slate-900">
-                  ${hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
+                  ₹{hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
                 </span>
                 {hasDiscount && (
                   <>
-                    <span className="text-sm text-slate-400 line-through">${product.price.toFixed(2)}</span>
+                    <span className="text-sm text-slate-400 line-through">₹{product.price.toFixed(2)}</span>
                     <Badge variant="danger" size="sm">Save {discountPercent}%</Badge>
                   </>
                 )}
@@ -161,18 +168,18 @@ function ProductDetailContent() {
 
               <div className="flex flex-wrap items-center gap-3">
                 <Button
-                  variant="amber"
+                  variant="primary"
                   size="lg"
                   onClick={handleAddToCart}
                   leftIcon={<ShoppingCart className="w-5 h-5" />}
-                  className="flex-1 font-bold shadow-md"
+                  className="flex-1 font-bold shadow-md shadow-brand-500/20"
                 >
                   Add to Cart
                 </Button>
                 <Button
-                  variant="orange"
+                  variant="secondary"
                   size="lg"
-                  onClick={handleAddToCart}
+                  onClick={handleBuyNow}
                   leftIcon={<Zap className="w-5 h-5" />}
                   className="flex-1 font-bold"
                 >
@@ -183,7 +190,7 @@ function ProductDetailContent() {
               {/* Guarantees */}
               <div className="grid grid-cols-2 gap-2 text-xs text-slate-500 pt-2">
                 <div className="flex items-center gap-1.5">
-                  <Truck className="w-4 h-4 text-amber-500" /> Free Shipping Eligible
+                  <Truck className="w-4 h-4 text-brand-600" /> Free Shipping Eligible
                 </div>
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-500" /> 30-Day Buyer Guarantee

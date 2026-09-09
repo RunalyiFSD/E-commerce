@@ -10,10 +10,12 @@ import Select from '../../components/common/Select';
 import EmptyState from '../../components/common/EmptyState';
 import ToastProvider, { useToast } from '../../components/common/Toast';
 import { PRODUCTS, CATEGORIES } from '../../services/mockData';
+import { useCart } from '../../context/CartContext';
 
 function ProductListingContent() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { addToast } = useToast();
+  const { addToCart } = useCart();
 
   const queryCategory = searchParams.get('category') || 'All';
   const querySearch = searchParams.get('q') || '';
@@ -24,7 +26,6 @@ function ProductListingContent() {
   const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState('featured');
   const [viewMode, setViewMode] = useState('grid');
-  const [cartCount, setCartCount] = useState(0);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   // Filter & Sort Logic
@@ -51,7 +52,7 @@ function ProductListingContent() {
   }, [selectedCategory, searchQuery, maxPrice, minRating, sortBy]);
 
   const handleAddToCart = (product) => {
-    setCartCount((prev) => prev + 1);
+    addToCart(product, 1);
     addToast({
       message: `Added "${product.name}" to cart`,
       type: 'success',
@@ -69,13 +70,13 @@ function ProductListingContent() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <Navbar cartCount={cartCount} />
+      <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
           <div>
-            <span className="text-xs uppercase font-extrabold text-amber-600 tracking-wider">Product Catalog</span>
+            <span className="text-xs uppercase font-extrabold text-brand-600 tracking-wider">Product Catalog</span>
             <h1 className="text-2xl font-black text-slate-900 mt-0.5">
               {selectedCategory !== 'All' ? selectedCategory : 'All Products'}
             </h1>
@@ -135,7 +136,7 @@ function ProductListingContent() {
               <h3 className="text-xs uppercase font-extrabold text-slate-700 tracking-wider">Filter Products</h3>
               <button
                 onClick={handleResetFilters}
-                className="text-[11px] text-amber-600 font-bold hover:underline flex items-center gap-1"
+                className="text-[11px] text-brand-600 font-bold hover:underline flex items-center gap-1"
               >
                 <RotateCcw className="w-3 h-3" /> Reset
               </button>
@@ -157,7 +158,7 @@ function ProductListingContent() {
                 <button
                   onClick={() => setSelectedCategory('All')}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    selectedCategory === 'All' ? 'bg-amber-50 text-amber-900 font-bold' : 'text-slate-600 hover:bg-slate-50'
+                    selectedCategory === 'All' ? 'bg-brand-50 text-brand-900 font-bold' : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
                   All Categories
@@ -167,7 +168,7 @@ function ProductListingContent() {
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.name)}
                     className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      selectedCategory === cat.name ? 'bg-amber-50 text-amber-900 font-bold' : 'text-slate-600 hover:bg-slate-50'
+                      selectedCategory === cat.name ? 'bg-brand-50 text-brand-900 font-bold' : 'text-slate-600 hover:bg-slate-50'
                     }`}
                   >
                     {cat.name}
@@ -180,7 +181,7 @@ function ProductListingContent() {
             <div>
               <div className="flex justify-between text-xs font-semibold text-slate-700 mb-2">
                 <span>Max Price:</span>
-                <span className="font-extrabold text-slate-900">${maxPrice}</span>
+                <span className="font-extrabold text-slate-900">₹{maxPrice}</span>
               </div>
               <input
                 type="range"
@@ -189,7 +190,7 @@ function ProductListingContent() {
                 step="10"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-amber-500 cursor-pointer"
+                className="w-full accent-brand-600 cursor-pointer"
               />
             </div>
 
@@ -202,7 +203,7 @@ function ProductListingContent() {
                     key={stars}
                     onClick={() => setMinRating(minRating === stars ? 0 : stars)}
                     className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      minRating === stars ? 'bg-amber-50 text-amber-900 font-bold' : 'text-slate-600 hover:bg-slate-50'
+                      minRating === stars ? 'bg-brand-50 text-brand-900 font-bold' : 'text-slate-600 hover:bg-slate-50'
                     }`}
                   >
                     <div className="flex items-center gap-1 text-amber-400">

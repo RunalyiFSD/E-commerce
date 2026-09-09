@@ -65,7 +65,7 @@ export function OrderConfirmationPage() {
             </div>
             <div className="flex justify-between items-center pt-1">
               <span className="text-slate-500">Total Paid</span>
-              <span className="text-base font-black text-slate-900">${order.pricing?.total?.toFixed(2) || '0.00'}</span>
+              <span className="text-base font-black text-slate-900">₹{order.pricing?.total?.toFixed(2) || '0.00'}</span>
             </div>
           </div>
 
