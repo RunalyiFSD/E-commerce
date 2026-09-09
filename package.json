@@ -1,0 +1,19 @@
+{
+  "name": "ecommerce-platform",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build": "npm --prefix frontend run build",
+    "test": "npm --prefix backend run test",
+    "lint": "npm --prefix frontend run lint && npm --prefix backend run lint",
+    "preview": "npm --prefix frontend run preview",
+    "server": "npm --prefix backend run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

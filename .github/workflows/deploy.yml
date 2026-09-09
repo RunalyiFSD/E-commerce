@@ -1,0 +1,32 @@
+name: Production Deployment
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate project structure
+        run: |
+          test -f frontend/package.json
+          test -f backend/package.json
+
+      - name: Deployment gate
+        run: echo "Release validated. Configure hosting provider deployment below."

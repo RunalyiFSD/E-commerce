@@ -1,0 +1,30 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: PR Quality Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for committed environment files
+        run: |
+          if git ls-files | grep -E '(^|/)(\.env|\.env\..*)$' | grep -v '\.env.example$'; then
+            echo "ERROR: A real environment file appears to be tracked."
+            exit 1
+          fi
+
+      - name: Check for obvious secret patterns
+        run: |
+          if git grep -n -I -E '(AKIA[0-9A-Z]{16}|BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY|sk-[A-Za-z0-9_-]{20,})' -- ':!*.md'; then
+            echo "ERROR: Possible secret detected in tracked source files."
+            exit 1
+          fi
