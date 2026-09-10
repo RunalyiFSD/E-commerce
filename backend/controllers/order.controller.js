@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Order from '../models/order.model.js';
 import Product from '../models/product.model.js';
 import { isValidTransition } from '../utils/orderStatusMachine.js';
@@ -33,18 +34,28 @@ export const createOrder = async (req, res, next) => {
     const enrichedItems = await Promise.all(
       items.map(async (item) => {
         let sellerId = item.seller;
-        if (!sellerId && item.product) {
-          const p = await Product.findById(item.product);
-          if (p) sellerId = p.seller;
+        let productRef = null;
+
+        if (item.product && mongoose.Types.ObjectId.isValid(item.product)) {
+          productRef = item.product;
+          if (!sellerId) {
+            const p = await Product.findById(item.product);
+            if (p) sellerId = p.seller;
+          }
+        }
+
+        if (!sellerId || !mongoose.Types.ObjectId.isValid(sellerId)) {
+          sellerId = req.user._id;
         }
 
         return {
-          product: item.product,
+          product: productRef || item.product,
+          productId: String(item.product || ''),
           productName: item.productName || 'Product Item',
           quantity: item.quantity,
           price: item.price,
           image: item.image || '',
-          seller: sellerId || req.user._id,
+          seller: sellerId,
         };
       })
     );
@@ -158,7 +169,10 @@ export const getOrderById = async (req, res, next) => {
     const { id } = req.params;
     const { role, _id } = req.user;
 
-    const order = await Order.findById(id)
+    const isObjectId = mongoose.Types.ObjectId.isValid(id);
+    const orderQuery = isObjectId ? { _id: id } : { orderNumber: id.toUpperCase() };
+
+    const order = await Order.findOne(orderQuery)
       .populate('customer', 'name email')
       .populate('items.product', 'name price images SKU')
       .populate('items.seller', 'name storeName');
@@ -257,7 +271,10 @@ export const getOrderTracking = async (req, res, next) => {
     const { id } = req.params;
     const { role, _id } = req.user;
 
-    const order = await Order.findById(id)
+    const isObjectId = mongoose.Types.ObjectId.isValid(id);
+    const orderQuery = isObjectId ? { _id: id } : { orderNumber: id.toUpperCase() };
+
+    const order = await Order.findOne(orderQuery)
       .populate('customer', 'name email')
       .populate('items.product', 'name price images');
 

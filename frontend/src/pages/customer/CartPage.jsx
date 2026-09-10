@@ -34,7 +34,7 @@ function CartPageContent() {
     e.preventDefault();
     if (promoCode.trim().toUpperCase() === 'SAVE10') {
       setAppliedPromo({ code: 'SAVE10', discount: 10 });
-      addToast({ message: 'Promo code SAVE10 applied! $10 discount saved.', type: 'success' });
+      addToast({ message: 'Promo code SAVE10 applied! ₹10 discount saved.', type: 'success' });
     } else {
       addToast({ message: 'Invalid promo code. Try "SAVE10"', type: 'error' });
     }
@@ -50,11 +50,11 @@ function CartPageContent() {
         {/* Breadcrumb Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <span className="text-xs uppercase font-extrabold text-amber-600 tracking-wider">Shopping Basket</span>
+            <span className="text-xs uppercase font-extrabold text-brand-600 tracking-wider">Shopping Basket</span>
             <h1 className="text-2xl font-black text-slate-900 mt-0.5">Your Cart ({itemCount} items)</h1>
           </div>
 
-          <Link to="/products" className="text-xs font-bold text-slate-600 hover:text-amber-600 flex items-center gap-1.5">
+          <Link to="/products" className="text-xs font-bold text-slate-600 hover:text-brand-600 flex items-center gap-1.5">
             <ArrowLeft className="w-4 h-4" /> Continue Shopping
           </Link>
         </div>
@@ -63,11 +63,11 @@ function CartPageContent() {
           <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center shadow-xs">
             <EmptyState
               icon={ShoppingCart}
-              title="Your E-Commerce Cart is empty"
+              title="Your Shopping Cart is empty"
               description="Discover thousands of deals and top-rated products waiting for you."
               action={
                 <Link to="/products">
-                  <Button variant="amber" size="lg" className="font-bold shadow-md">
+                  <Button variant="primary" size="lg" className="font-bold shadow-md shadow-brand-500/25">
                     Explore Today's Deals
                   </Button>
                 </Link>
@@ -95,7 +95,7 @@ function CartPageContent() {
                         </div>
 
                         <div className="min-w-0">
-                          <span className="text-[10px] uppercase font-bold text-amber-600">{product.category}</span>
+                          <span className="text-[10px] uppercase font-bold text-brand-600">{product.category}</span>
                           <h3 className="text-sm font-bold text-slate-900 truncate line-clamp-1">{product.name}</h3>
                           <p className="text-xs text-slate-400 mt-0.5">
                             Sold by <strong className="text-slate-700">{product.seller?.name || 'Authorized Store'}</strong>
@@ -184,7 +184,7 @@ function CartPageContent() {
                 </div>
 
                 {appliedPromo && (
-                  <div className="flex justify-between text-amber-700 font-bold pt-1">
+                  <div className="flex justify-between text-brand-700 font-bold pt-1">
                     <span>Promo ({appliedPromo.code})</span>
                     <span>-₹{appliedPromo.discount.toFixed(2)}</span>
                   </div>
@@ -211,11 +211,11 @@ function CartPageContent() {
 
               {/* Checkout Action Button */}
               <Button
-                variant="amber"
+                variant="primary"
                 size="lg"
                 onClick={() => navigate('/checkout')}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
-                className="w-full font-bold shadow-md"
+                className="w-full font-bold shadow-md shadow-brand-500/25"
               >
                 Proceed to Checkout
               </Button>

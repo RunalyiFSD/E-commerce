@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, CheckCheck, Package, RotateCcw, DollarSign, Info } from 'lucide-react';
+import { Bell, CheckCheck, Package, RotateCcw, IndianRupee, Info } from 'lucide-react';
 import notificationService from '../../services/notificationService';
 import { cn } from '../../utils/cn';
 
@@ -74,7 +74,7 @@ export function NotificationBell() {
       case 'RETURN':
         return <RotateCcw className="w-4 h-4 text-purple-500" />;
       case 'REFUND':
-        return <DollarSign className="w-4 h-4 text-emerald-500" />;
+        return <IndianRupee className="w-4 h-4 text-emerald-500" />;
       case 'ORDER_STATUS':
       default:
         return <Bell className="w-4 h-4 text-amber-500" />;
@@ -91,7 +91,7 @@ export function NotificationBell() {
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 bg-red-500 text-white font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-amazon-blue shadow-xs">
+          <span className="absolute top-0 right-0 bg-red-500 text-white font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-slate-950 shadow-xs">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -101,12 +101,12 @@ export function NotificationBell() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden animate-in zoom-in-95 duration-150">
           {/* Header */}
-          <div className="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
+          <div className="px-4 py-3 bg-slate-950 text-white flex items-center justify-between border-b border-slate-800">
             <div className="flex items-center gap-2">
-              <Bell className="w-4 h-4 text-amber-400" />
+              <Bell className="w-4 h-4 text-brand-400" />
               <span className="text-xs font-black uppercase tracking-wider">Notifications</span>
               {unreadCount > 0 && (
-                <span className="bg-amber-400 text-slate-900 font-bold text-[10px] px-2 py-0.5 rounded-full">
+                <span className="bg-brand-500 text-white font-bold text-[10px] px-2 py-0.5 rounded-full">
                   {unreadCount} New
                 </span>
               )}
@@ -114,7 +114,7 @@ export function NotificationBell() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-[11px] font-bold text-amber-300 hover:text-white flex items-center gap-1 transition-colors"
+                className="text-[11px] font-bold text-brand-300 hover:text-white flex items-center gap-1 transition-colors"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 Mark all read

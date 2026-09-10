@@ -6,7 +6,7 @@ const BENEFITS = [
     icon: Truck,
     title: 'Express Delivery',
     description: 'Track packages in real-time with continuous updates.',
-    color: 'text-amber-500 bg-amber-50',
+    color: 'text-brand-600 bg-brand-50',
   },
   {
     icon: ShieldCheck,

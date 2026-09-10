@@ -13,7 +13,7 @@ export function LoginPage() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login, setUser } = useAuth();
+  const { login, demoLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -31,29 +31,31 @@ export function LoginPage() {
     }
   };
 
-  // Demo account shortcut for development testing
-  const handleQuickDemoLogin = (role) => {
-    let mockUser;
-    if (role === 'ADMIN') {
-      mockUser = { id: 'admin-1', name: 'Platform Administrator', email: 'admin@amazon.com', role: 'ADMIN' };
-    } else if (role === 'SELLER') {
-      mockUser = { id: 'seller-1', name: 'Sony Direct Store', email: 'seller@sony.com', role: 'SELLER', storeName: 'Sony Official' };
-    } else {
-      mockUser = { id: 'cust-1', name: 'Alex Johnson', email: 'alex@example.com', role: 'CUSTOMER' };
-    }
+  // Demo account shortcut for development testing with real session
+  const handleQuickDemoLogin = async (role) => {
+    setError('');
+    setIsSubmitting(true);
+    const result = await demoLogin(role);
+    setIsSubmitting(false);
 
-    setUser(mockUser);
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    localStorage.setItem('token', 'demo-mock-jwt-token-123456');
-    navigate('/dashboard');
+    if (result.success) {
+      navigate('/dashboard');
+    } else {
+      setError(result.message);
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4 font-sans">
       {/* Brand Header */}
-      <Link to="/" className="mb-6 flex items-center space-x-2">
-        <span className="text-3xl font-black text-amber-500 tracking-tight">E-Commerce</span>
-        <span className="text-xs bg-slate-900 text-white px-2 py-0.5 rounded font-bold uppercase">Enterprise</span>
+      <Link to="/" className="mb-6 flex items-center space-x-2.5">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-brand-500/25">
+          <span className="text-white font-black text-xl">E</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-2xl font-black text-slate-900 tracking-tight leading-none">E Mart</span>
+          <span className="text-[10px] uppercase font-extrabold tracking-widest text-brand-600">Marketplace</span>
+        </div>
       </Link>
 
       <Card className="w-full max-w-md bg-white shadow-xl rounded-3xl border border-slate-200 overflow-hidden">
@@ -97,11 +99,11 @@ export function LoginPage() {
 
             <Button
               type="submit"
-              variant="amber"
+              variant="primary"
               size="lg"
               isLoading={isSubmitting}
               leftIcon={<LogIn className="w-4 h-4" />}
-              className="w-full font-bold shadow-md mt-2"
+              className="w-full font-bold shadow-md shadow-brand-500/25 mt-2"
             >
               Sign In
             </Button>
@@ -124,10 +126,10 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleQuickDemoLogin('SELLER')}
-                className="p-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl text-center transition-colors"
+                className="p-2.5 bg-brand-50 hover:bg-brand-100 border border-brand-200 rounded-xl text-center transition-colors"
               >
-                <Store className="w-4 h-4 text-amber-600 mx-auto mb-1" />
-                <span className="text-[10px] font-bold text-amber-900 block">Seller</span>
+                <Store className="w-4 h-4 text-brand-600 mx-auto mb-1" />
+                <span className="text-[10px] font-bold text-brand-900 block">Seller</span>
               </button>
               <button
                 type="button"
@@ -142,8 +144,8 @@ export function LoginPage() {
         </Card.Body>
 
         <Card.Footer className="bg-slate-50 text-center justify-center p-4 text-xs text-slate-600">
-          New to E-Commerce Marketplace?{' '}
-          <Link to="/register" className="font-bold text-amber-600 hover:underline ml-1">
+          New to E Mart?{' '}
+          <Link to="/register" className="font-bold text-brand-600 hover:underline ml-1">
             Create an Account
           </Link>
         </Card.Footer>

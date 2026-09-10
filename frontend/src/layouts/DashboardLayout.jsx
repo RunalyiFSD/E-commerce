@@ -4,7 +4,7 @@ import Sidebar from '../components/layout/Sidebar';
 import Footer from '../components/layout/Footer';
 import { X } from 'lucide-react';
 
-export function DashboardLayout({ children, user = { name: 'Customer User', role: 'CUSTOMER' }, cartCount = 0 }) {
+export function DashboardLayout({ children, user, cartCount }) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   return (

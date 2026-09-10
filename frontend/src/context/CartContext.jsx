@@ -21,12 +21,20 @@ export function CartProvider({ children }) {
 
   // Add product to cart
   const addToCart = useCallback((product, quantity = 1) => {
+    if (!product) return;
+    const prodId = product.id || product._id;
     setCartItems((prevItems) => {
-      const existingIndex = prevItems.findIndex((item) => item.product.id === product.id || item.product._id === product.id);
+      const existingIndex = prevItems.findIndex((item) => {
+        const itemId = item.product?.id || item.product?._id;
+        return itemId && prodId && String(itemId) === String(prodId);
+      });
 
       if (existingIndex > -1) {
         const updated = [...prevItems];
-        updated[existingIndex].quantity += quantity;
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          quantity: updated[existingIndex].quantity + quantity,
+        };
         return updated;
       }
 
@@ -37,9 +45,10 @@ export function CartProvider({ children }) {
   // Remove product from cart
   const removeFromCart = useCallback((productId) => {
     setCartItems((prevItems) =>
-      prevItems.filter(
-        (item) => item.product.id !== productId && item.product._id !== productId
-      )
+      prevItems.filter((item) => {
+        const itemId = item.product?.id || item.product?._id;
+        return String(itemId) !== String(productId);
+      })
     );
   }, []);
 
@@ -52,7 +61,8 @@ export function CartProvider({ children }) {
 
     setCartItems((prevItems) =>
       prevItems.map((item) => {
-        if (item.product.id === productId || item.product._id === productId) {
+        const itemId = item.product?.id || item.product?._id;
+        if (String(itemId) === String(productId)) {
           return { ...item, quantity };
         }
         return item;

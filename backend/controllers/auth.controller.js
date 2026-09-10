@@ -132,3 +132,47 @@ export const getMe = async (req, res, next) => {
 export const logout = async (req, res) => {
   res.status(200).json({ message: 'Logged out successfully' });
 };
+
+/**
+ * @route   POST /api/auth/demo-login
+ * @desc    Authenticate or auto-provision demo user with real signed token
+ * @access  Public
+ */
+export const demoLogin = async (req, res, next) => {
+  try {
+    const { role } = req.body;
+    const userRole = ['ADMIN', 'SELLER', 'CUSTOMER'].includes(role) ? role : 'CUSTOMER';
+
+    const demoEmail = `demo_${userRole.toLowerCase()}@emart.io`;
+    const demoName = userRole === 'ADMIN' ? 'Platform Administrator' : userRole === 'SELLER' ? 'E Mart Official Store' : 'Alex Johnson';
+    const storeName = userRole === 'SELLER' ? 'E Mart Official Store' : undefined;
+
+    let user = await User.findOne({ email: demoEmail });
+    if (!user) {
+      user = await User.create({
+        name: demoName,
+        email: demoEmail,
+        password: 'password123',
+        role: userRole,
+        storeName,
+      });
+    }
+
+    const token = generateToken(user._id, user.role);
+
+    res.status(200).json({
+      message: 'Demo login successful',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        storeName: user.storeName,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

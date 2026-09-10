@@ -39,15 +39,15 @@ export function TrackingLookupPage() {
         {/* Search Hero Card */}
         <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 text-white shadow-xl mb-10">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/40 text-amber-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 bg-brand-500/20 border border-brand-500/40 text-brand-300 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
               <Package className="w-4 h-4" />
-              <span>E-Commerce Logistics Central Lookup</span>
+              <span>E Mart Logistics Central Lookup</span>
             </div>
             <h1 className="text-3xl font-black tracking-tight mb-3">
               Track Your Package
             </h1>
             <p className="text-slate-300 text-sm">
-              Enter your order reference code (e.g. <span className="font-mono text-amber-400">AMZ-2026-12345</span>) or tracking number (e.g. <span className="font-mono text-amber-400">TRK-982140-US</span>) to see real-time updates.
+              Enter your order reference code (e.g. <span className="font-mono text-brand-300">EM-2026-12345</span>) or tracking number (e.g. <span className="font-mono text-brand-300">TRK-982140-US</span>) to see real-time updates.
             </p>
           </div>
 
@@ -63,10 +63,10 @@ export function TrackingLookupPage() {
             </div>
             <Button
               type="submit"
-              variant="amber"
+              variant="primary"
               size="lg"
               isLoading={loading}
-              className="font-bold px-6 shrink-0"
+              className="font-bold px-6 shrink-0 shadow-md shadow-brand-500/25"
               icon={<ArrowRight className="w-4 h-4" />}
             >
               Track Package

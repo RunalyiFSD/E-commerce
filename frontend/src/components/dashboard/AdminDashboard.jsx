@@ -232,7 +232,7 @@ export function AdminDashboard({ data, onRefresh }) {
                     <OrderStatusBadge status={ord.status} size="sm" />
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Customer: <span className="font-semibold text-slate-800">{ord.customer?.name || 'User'}</span> &bull; Items: {ord.items?.length} &bull; Total: ${ord.pricing?.total?.toFixed(2)}
+                    Customer: <span className="font-semibold text-slate-800">{ord.customer?.name || 'User'}</span> &bull; Items: {ord.items?.length} &bull; Total: ₹{ord.pricing?.total?.toFixed(2)}
                   </p>
                 </div>
 

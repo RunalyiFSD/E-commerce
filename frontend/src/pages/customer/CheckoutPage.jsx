@@ -90,25 +90,41 @@ function CheckoutContent() {
           }
         }
       } catch (e) {
-        console.warn('[API Order Sync Fallback] Operating offline checkout simulation');
+        console.warn('[API Order Sync Fallback] Operating offline checkout simulation:', e.response?.data?.message || e.message);
       }
 
       // Save created order in localStorage for confirmation/tracking pages
-      const createdOrder = {
+      const createdOrder = backendOrder || {
         _id: orderId,
         orderNumber: orderId,
         items: orderPayload.items,
         shippingAddress: address,
-        pricing: { total: grandTotal },
+        pricing: { total: grandTotal, subtotal: grandTotal },
         status: 'PLACED',
         createdAt: new Date().toISOString(),
         tracking: {
           trackingNumber: generatedTrackingCode,
           courier: 'E-Commerce Express Logistics',
         },
+        timeline: [
+          {
+            status: 'PLACED',
+            message: 'Order received and payment verified',
+            timestamp: new Date().toISOString(),
+            source: 'CUSTOMER',
+          },
+        ],
       };
 
       localStorage.setItem(`order_${orderId}`, JSON.stringify(createdOrder));
+      try {
+        const storedList = JSON.parse(localStorage.getItem('customer_orders') || '[]');
+        const updatedList = [
+          createdOrder,
+          ...storedList.filter((o) => (o._id || o.orderNumber) !== (createdOrder._id || createdOrder.orderNumber)),
+        ];
+        localStorage.setItem('customer_orders', JSON.stringify(updatedList));
+      } catch (err) {}
 
       console.log('\n============================================================');
       console.log('🛒 ORDER PLACEMENT COMPLETE (ALPHANUMERIC CODES GENERATED):');
@@ -153,7 +169,7 @@ function CheckoutContent() {
                       isPassed
                         ? 'bg-emerald-500 text-white'
                         : isActive
-                        ? 'bg-amber-500 text-slate-900 ring-4 ring-amber-400/30'
+                        ? 'bg-brand-600 text-white ring-4 ring-brand-500/30'
                         : 'bg-slate-100 text-slate-400'
                     }`}
                   >
@@ -175,7 +191,7 @@ function CheckoutContent() {
             {currentStep === 1 && (
               <div className="space-y-6">
                 <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                  <MapPin className="w-5 h-5 text-amber-500" />
+                  <MapPin className="w-5 h-5 text-brand-600" />
                   <h2 className="text-base font-black text-slate-900">Step 1: Shipping Address</h2>
                 </div>
 
@@ -216,11 +232,11 @@ function CheckoutContent() {
 
                 <div className="flex justify-end pt-4">
                   <Button
-                    variant="amber"
+                    variant="primary"
                     size="md"
                     onClick={() => setCurrentStep(2)}
                     rightIcon={<ArrowRight className="w-4 h-4" />}
-                    className="font-bold"
+                    className="font-bold shadow-md shadow-brand-500/20"
                   >
                     Continue to Delivery
                   </Button>
@@ -232,7 +248,7 @@ function CheckoutContent() {
             {currentStep === 2 && (
               <div className="space-y-6">
                 <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                  <Truck className="w-5 h-5 text-amber-500" />
+                  <Truck className="w-5 h-5 text-brand-600" />
                   <h2 className="text-base font-black text-slate-900">Step 2: Choose Delivery Option</h2>
                 </div>
 
@@ -240,11 +256,11 @@ function CheckoutContent() {
                   <label
                     onClick={() => setShippingMethod('STANDARD')}
                     className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
-                      shippingMethod === 'STANDARD' ? 'border-amber-500 bg-amber-50/40 ring-2 ring-amber-500/20' : 'border-slate-200'
+                      shippingMethod === 'STANDARD' ? 'border-brand-600 bg-brand-50/40 ring-2 ring-brand-500/20' : 'border-slate-200'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${shippingMethod === 'STANDARD' ? 'border-amber-500 bg-amber-500' : 'border-slate-300'}`} />
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${shippingMethod === 'STANDARD' ? 'border-brand-600 bg-brand-600' : 'border-slate-300'}`} />
                       <div>
                         <span className="text-sm font-bold text-slate-900 block">Standard FREE Delivery</span>
                         <span className="text-xs text-slate-500">Delivered in 3-5 business days</span>
@@ -256,11 +272,11 @@ function CheckoutContent() {
                   <label
                     onClick={() => setShippingMethod('EXPRESS')}
                     className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
-                      shippingMethod === 'EXPRESS' ? 'border-amber-500 bg-amber-50/40 ring-2 ring-amber-500/20' : 'border-slate-200'
+                      shippingMethod === 'EXPRESS' ? 'border-brand-600 bg-brand-50/40 ring-2 ring-brand-500/20' : 'border-slate-200'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${shippingMethod === 'EXPRESS' ? 'border-amber-500 bg-amber-500' : 'border-slate-300'}`} />
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${shippingMethod === 'EXPRESS' ? 'border-brand-600 bg-brand-600' : 'border-slate-300'}`} />
                       <div>
                         <span className="text-sm font-bold text-slate-900 block">Express Priority Courier</span>
                         <span className="text-xs text-slate-500">Delivered tomorrow by 10:30 AM</span>
@@ -274,7 +290,7 @@ function CheckoutContent() {
                   <Button variant="outline" size="md" onClick={() => setCurrentStep(1)}>
                     Back to Address
                   </Button>
-                  <Button variant="amber" size="md" onClick={() => setCurrentStep(3)} rightIcon={<ArrowRight className="w-4 h-4" />} className="font-bold">
+                  <Button variant="primary" size="md" onClick={() => setCurrentStep(3)} rightIcon={<ArrowRight className="w-4 h-4" />} className="font-bold shadow-md shadow-brand-500/20">
                     Continue to Payment
                   </Button>
                 </div>
@@ -285,7 +301,7 @@ function CheckoutContent() {
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                  <CreditCard className="w-5 h-5 text-amber-500" />
+                  <CreditCard className="w-5 h-5 text-brand-600" />
                   <h2 className="text-base font-black text-slate-900">Step 3: Select Payment Method</h2>
                 </div>
 
@@ -299,11 +315,11 @@ function CheckoutContent() {
                       key={m.id}
                       onClick={() => setPaymentMethod(m.id)}
                       className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
-                        paymentMethod === m.id ? 'border-amber-500 bg-amber-50/40 ring-2 ring-amber-500/20' : 'border-slate-200'
+                        paymentMethod === m.id ? 'border-brand-600 bg-brand-50/40 ring-2 ring-brand-500/20' : 'border-slate-200'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${paymentMethod === m.id ? 'border-amber-500 bg-amber-500' : 'border-slate-300'}`} />
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${paymentMethod === m.id ? 'border-brand-600 bg-brand-600' : 'border-slate-300'}`} />
                         <div>
                           <span className="text-sm font-bold text-slate-900 block">{m.title}</span>
                           <span className="text-xs text-slate-500">{m.desc}</span>
@@ -317,7 +333,7 @@ function CheckoutContent() {
                   <Button variant="outline" size="md" onClick={() => setCurrentStep(2)}>
                     Back to Delivery
                   </Button>
-                  <Button variant="amber" size="md" onClick={() => setCurrentStep(4)} rightIcon={<ArrowRight className="w-4 h-4" />} className="font-bold">
+                  <Button variant="primary" size="md" onClick={() => setCurrentStep(4)} rightIcon={<ArrowRight className="w-4 h-4" />} className="font-bold shadow-md shadow-brand-500/20">
                     Review Order
                   </Button>
                 </div>
@@ -361,11 +377,11 @@ function CheckoutContent() {
                     Back to Payment
                   </Button>
                   <Button
-                    variant="amber"
+                    variant="primary"
                     size="lg"
                     isLoading={isProcessing}
                     onClick={handlePlaceOrder}
-                    className="font-extrabold px-8 shadow-lg"
+                    className="font-extrabold px-8 shadow-lg shadow-brand-500/25"
                   >
                     Place Your Order (₹{grandTotal.toFixed(2)})
                   </Button>

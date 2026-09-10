@@ -111,7 +111,7 @@ export function TrackingTimeline({
                       isPassed
                         ? 'bg-emerald-500 text-white shadow-sm ring-4 ring-emerald-50'
                         : 'bg-white border-2 border-slate-300 text-slate-400',
-                      isCurrent && 'ring-4 ring-amber-400/40 bg-amber-500 text-slate-900 border-amber-500 scale-110'
+                      isCurrent && 'ring-4 ring-brand-500/30 bg-brand-600 text-white border-brand-600 scale-110'
                     )}
                   >
                     {isPassed ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}

@@ -51,15 +51,20 @@ export function RegisterPage() {
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4 font-sans">
       {/* Brand Header */}
-      <Link to="/" className="mb-6 flex items-center space-x-2">
-        <span className="text-3xl font-black text-amber-500 tracking-tight">E-Commerce</span>
-        <span className="text-xs bg-slate-900 text-white px-2 py-0.5 rounded font-bold uppercase">Enterprise</span>
+      <Link to="/" className="mb-6 flex items-center space-x-2.5">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-brand-500/25">
+          <span className="text-white font-black text-xl">E</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-2xl font-black text-slate-900 tracking-tight leading-none">E Mart</span>
+          <span className="text-[10px] uppercase font-extrabold tracking-widest text-brand-600">Marketplace</span>
+        </div>
       </Link>
 
       <Card className="w-full max-w-md bg-white shadow-xl rounded-3xl border border-slate-200 overflow-hidden">
         <Card.Header className="bg-slate-900 text-white px-6 py-5">
           <div>
-            <Card.Title className="text-lg font-black text-white">Create E-Commerce Account</Card.Title>
+            <Card.Title className="text-lg font-black text-white">Create E Mart Account</Card.Title>
             <Card.Description className="text-xs text-slate-400">
               Join as a customer or register a merchant store
             </Card.Description>
@@ -70,7 +75,16 @@ export function RegisterPage() {
           {error && (
             <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-2.5 text-xs text-rose-700 font-medium">
               <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-              <span>{error}</span>
+              <div className="flex-1">
+                <span>{error}</span>
+                {error.toLowerCase().includes('already exists') && (
+                  <div className="mt-1 font-bold">
+                    <Link to="/login" className="text-brand-700 underline hover:text-brand-900">
+                      Click here to sign in with this email &rarr;
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -94,7 +108,7 @@ export function RegisterPage() {
                   role === 'SELLER' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                <Store className="w-3.5 h-3.5 text-amber-500" /> Seller / Merchant
+                <Store className="w-3.5 h-3.5 text-brand-600" /> Seller / Merchant
               </button>
             </div>
           </div>
@@ -142,10 +156,10 @@ export function RegisterPage() {
 
             <Button
               type="submit"
-              variant="amber"
+              variant="primary"
               size="lg"
               isLoading={isSubmitting}
-              className="w-full font-bold shadow-md mt-2"
+              className="w-full font-bold shadow-md shadow-brand-500/25 mt-2"
             >
               Register & Create Account
             </Button>
@@ -154,7 +168,7 @@ export function RegisterPage() {
 
         <Card.Footer className="bg-slate-50 text-center justify-center p-4 text-xs text-slate-600">
           Already have an account?{' '}
-          <Link to="/login" className="font-bold text-amber-600 hover:underline ml-1">
+          <Link to="/login" className="font-bold text-brand-600 hover:underline ml-1">
             Sign In
           </Link>
         </Card.Footer>

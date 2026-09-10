@@ -20,7 +20,7 @@ export function ReturnReviewModal({ isOpen, onClose, order, onReviewProcessed })
     try {
       await notificationService.processReturn(order._id, { action, note });
       if (action === 'APPROVE') {
-        toast.success(`Return approved. Refund of $${order.pricing?.total?.toFixed(2)} processed for customer.`);
+        toast.success(`Return approved. Refund of ₹${order.pricing?.total?.toFixed(2)} processed for customer.`);
       } else {
         toast.info('Return request rejected.');
       }
