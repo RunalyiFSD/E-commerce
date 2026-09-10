@@ -5,6 +5,7 @@ import OrderCard from '../order/OrderCard';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import orderService from '../../services/orderService';
+import { formatCurrency, formatCompactCurrency } from '../../utils/formatCurrency';
 import {
   ShoppingBag,
   Truck,
@@ -226,7 +227,7 @@ export function CustomerDashboard({ data, onRefresh }) {
             <div>
               <span className="text-slate-400 font-semibold block">Carrier / Courier</span>
               <p className="font-bold text-slate-900">
-                {currentActiveShipment.tracking?.courier || 'E Mart Logistics'}
+                {currentActiveShipment.tracking?.courier || 'E-Commerce Express Logistics'}
               </p>
             </div>
             <div>
@@ -253,32 +254,7 @@ export function CustomerDashboard({ data, onRefresh }) {
               </p>
             </div>
 
-        {recentOrders.length === 0 ? (
-          <div className="text-center py-8 text-slate-400 text-xs">
-            <Package className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            <p>You haven't placed any orders yet.</p>
-          </div>
-        ) : (
-          <div className="divide-y divide-slate-100">
-            {recentOrders.map((ord) => (
-              <div key={ord._id} className="py-3.5 flex items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900 text-sm">#{ord.orderNumber}</span>
-                    <OrderStatusBadge status={ord.status} size="sm" />
-                  </div>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    {ord.items?.length} {ord.items?.length === 1 ? 'item' : 'items'} &bull; Total: ₹{ord.pricing?.total?.toFixed(2)}
-                  </p>
-                </div>
-
-                <Link to={`/orders/${ord._id}/track`}>
-                  <Button variant="outline" size="xs" icon={<ArrowRight className="w-3.5 h-3.5" />}>
-                    Track
-                  </Button>
-                </Link>
-              </div>
-
+            <div className="flex items-center gap-2 flex-wrap">
               {!isDeliveries && (
                 <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold overflow-x-auto">
                   <button
@@ -326,6 +302,18 @@ export function CustomerDashboard({ data, onRefresh }) {
                 Sync
               </Button>
             </div>
+          </div>
+
+          {/* Search bar */}
+          <div className="relative">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            <input
+              type="text"
+              placeholder="Search by order #, product name, or tracking code..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs font-medium focus:outline-none focus:border-amber-400"
+            />
           </div>
 
           {/* Orders Cards List */}
@@ -407,7 +395,7 @@ export function CustomerDashboard({ data, onRefresh }) {
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      {ord.items?.length} {ord.items?.length === 1 ? 'item' : 'items'} &bull; Total: ₹{ord.pricing?.total?.toFixed(2)}
+                      {ord.items?.length} {ord.items?.length === 1 ? 'item' : 'items'} &bull; Total: {formatCurrency(ord.pricing?.total || 0)}
                     </p>
                   </div>
 
