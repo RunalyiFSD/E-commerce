@@ -25,7 +25,7 @@ export function OrderCard({
       state: 'WA',
     },
     tracking: {
-      trackingNumber: 'TRK-98214-US',
+      trackingNumber: 'TRK-98214-IN',
       courier: 'FedEx Express',
     },
   },
@@ -57,7 +57,7 @@ export function OrderCard({
             </div>
             <div>
               <span className="text-slate-400 font-semibold block text-[10px] uppercase tracking-wider">Total Amount</span>
-              <span className="font-extrabold text-slate-900">${order.pricing?.total?.toFixed(2) || '0.00'}</span>
+              <span className="font-extrabold text-slate-900">₹{order.pricing?.total?.toFixed(2) || '0.00'}</span>
             </div>
           </div>
 
@@ -84,7 +84,7 @@ export function OrderCard({
                 <div className="flex-1 min-w-0">
                   <h5 className="text-xs font-bold text-slate-800 truncate">{item.productName}</h5>
                   <div className="text-[11px] text-slate-500 mt-0.5">
-                    Qty: <span className="font-medium text-slate-700">{item.quantity}</span> &bull; ${item.price?.toFixed(2)}
+                    Qty: <span className="font-medium text-slate-700">{item.quantity}</span> &bull; ₹{item.price?.toFixed(2)}
                   </div>
                 </div>
               </div>

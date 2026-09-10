@@ -102,9 +102,9 @@ function CartPageContent() {
                           </p>
 
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="text-base font-extrabold text-slate-900">${effectivePrice.toFixed(2)}</span>
+                            <span className="text-base font-extrabold text-slate-900">₹{effectivePrice.toFixed(2)}</span>
                             {product.discountPrice && (
-                              <span className="text-xs text-slate-400 line-through">${product.price.toFixed(2)}</span>
+                              <span className="text-xs text-slate-400 line-through">₹{product.price.toFixed(2)}</span>
                             )}
                           </div>
                         </div>
@@ -132,7 +132,7 @@ function CartPageContent() {
                         {/* Line Total & Delete */}
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-extrabold text-slate-900 min-w-[70px] text-right">
-                            ${(effectivePrice * quantity).toFixed(2)}
+                            ₹{(effectivePrice * quantity).toFixed(2)}
                           </span>
                           <button
                             onClick={() => removeFromCart(product.id || product._id)}
@@ -159,13 +159,13 @@ function CartPageContent() {
               <div className="space-y-2.5 text-xs">
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal ({itemCount} items)</span>
-                  <span className="font-semibold text-slate-900">${subtotal.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-900">₹{subtotal.toFixed(2)}</span>
                 </div>
 
                 {discountTotal > 0 && (
                   <div className="flex justify-between text-emerald-700 font-medium">
                     <span>Discount Savings</span>
-                    <span>-${discountTotal.toFixed(2)}</span>
+                    <span>-₹{discountTotal.toFixed(2)}</span>
                   </div>
                 )}
 
@@ -174,25 +174,25 @@ function CartPageContent() {
                   {shippingCost === 0 ? (
                     <span className="text-emerald-600 font-bold">FREE</span>
                   ) : (
-                    <span className="font-semibold text-slate-900">${shippingCost.toFixed(2)}</span>
+                    <span className="font-semibold text-slate-900">₹{shippingCost.toFixed(2)}</span>
                   )}
                 </div>
 
                 <div className="flex justify-between text-slate-600">
                   <span>Estimated Tax (8%)</span>
-                  <span className="font-semibold text-slate-900">${taxEstimate.toFixed(2)}</span>
+                  <span className="font-semibold text-slate-900">₹{taxEstimate.toFixed(2)}</span>
                 </div>
 
                 {appliedPromo && (
                   <div className="flex justify-between text-amber-700 font-bold pt-1">
                     <span>Promo ({appliedPromo.code})</span>
-                    <span>-${appliedPromo.discount.toFixed(2)}</span>
+                    <span>-₹{appliedPromo.discount.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline">
                   <span className="text-sm font-bold text-slate-900">Total Order Amount</span>
-                  <span className="text-xl font-black text-slate-900">${finalGrandTotal.toFixed(2)}</span>
+                  <span className="text-xl font-black text-slate-900">₹{finalGrandTotal.toFixed(2)}</span>
                 </div>
               </div>
 

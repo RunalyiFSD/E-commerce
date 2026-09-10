@@ -28,7 +28,7 @@ export function FulfillmentModal({ isOpen, onClose, order, onOrderUpdated }) {
     if (order) {
       setNextStatus(allowedNext[0] || order.status);
       setCourier(order.tracking?.courier || 'E-Commerce Express');
-      setTrackingNumber(order.tracking?.trackingNumber || `TRK-${Math.floor(100000 + Math.random() * 900000)}-US`);
+      setTrackingNumber(order.tracking?.trackingNumber || `TRK-${Math.floor(100000 + Math.random() * 900000)}-IN`);
       setLocation(order.tracking?.currentLocation || '');
       setEstimatedDeliveryDate(order.tracking?.estimatedDeliveryDate || '3 - 5 Business Days');
       setMessage('');
@@ -157,7 +157,7 @@ export function FulfillmentModal({ isOpen, onClose, order, onOrderUpdated }) {
               leftIcon={<Hash className="w-4 h-4 text-slate-400" />}
               value={trackingNumber}
               onChange={(e) => setTrackingNumber(e.target.value)}
-              placeholder="e.g. TRK-984210-US"
+              placeholder="e.g. TRK-984210-IN"
             />
           </div>
 

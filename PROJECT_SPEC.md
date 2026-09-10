@@ -1,5 +1,5 @@
 # Amazon-Like E-Commerce Application — Project Specification
-
+.
 ## 1. Purpose
 
 Build a professional, production-oriented e-commerce application inspired by large marketplaces such as Amazon.

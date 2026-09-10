@@ -6,6 +6,7 @@ import Footer from '../../components/layout/Footer';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export function OrderConfirmationPage() {
   const { orderId } = useParams();
@@ -65,7 +66,7 @@ export function OrderConfirmationPage() {
             </div>
             <div className="flex justify-between items-center pt-1">
               <span className="text-slate-500">Total Paid</span>
-              <span className="text-base font-black text-slate-900">${order.pricing?.total?.toFixed(2) || '0.00'}</span>
+              <span className="text-base font-black text-slate-900">{formatCurrency(order.pricing?.total || 0)}</span>
             </div>
           </div>
 

@@ -4,6 +4,7 @@ import Button from '../common/Button';
 import Select from '../common/Select';
 import notificationService from '../../services/notificationService';
 import { useToast } from '../common/Toast';
+import { formatCurrency } from '../../utils/formatCurrency';
 import { RotateCcw, AlertCircle } from 'lucide-react';
 
 export function ReturnRequestModal({ isOpen, onClose, order, onReturnSubmitted }) {
@@ -54,7 +55,7 @@ export function ReturnRequestModal({ isOpen, onClose, order, onReturnSubmitted }
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-3.5 flex items-start gap-2 text-xs text-amber-900">
           <RotateCcw className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <span>
-            Once submitted, your return request will be reviewed by the merchant. Approved returns receive a full refund of <strong>${order.pricing?.total?.toFixed(2)}</strong>.
+            Once submitted, your return request will be reviewed by the merchant. Approved returns receive a full refund of <strong>{formatCurrency(order.pricing?.total || 0)}</strong>.
           </span>
         </div>
 

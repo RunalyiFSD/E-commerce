@@ -8,6 +8,7 @@ import ErrorState from '../../components/common/ErrorState';
 import Button from '../../components/common/Button';
 import ReturnRequestModal from '../../components/order/ReturnRequestModal';
 import orderService from '../../services/orderService';
+import { formatCurrency } from '../../utils/formatCurrency';
 import { ArrowLeft, Package, MapPin, CreditCard, ExternalLink, ShieldCheck, RotateCcw } from 'lucide-react';
 
 export function OrderTrackingPage() {
@@ -188,7 +189,7 @@ export function OrderTrackingPage() {
                       <p className="text-slate-400 text-[11px]">Qty: {item.quantity}</p>
                     </div>
                   </div>
-                  <span className="font-bold text-slate-900">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="font-bold text-slate-900">{formatCurrency(item.price * item.quantity)}</span>
                 </div>
               ))}
             </div>

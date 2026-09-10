@@ -114,11 +114,11 @@ function ProductDetailContent() {
               {/* Price Banner */}
               <div className="mt-6 p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-baseline gap-3">
                 <span className="text-3xl font-black text-slate-900">
-                  ${hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
+                  ₹{hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
                 </span>
                 {hasDiscount && (
                   <>
-                    <span className="text-sm text-slate-400 line-through">${product.price.toFixed(2)}</span>
+                    <span className="text-sm text-slate-400 line-through">₹{product.price.toFixed(2)}</span>
                     <Badge variant="danger" size="sm">Save {discountPercent}%</Badge>
                   </>
                 )}

@@ -34,7 +34,9 @@ export function DashboardPage() {
   const renderRoleDashboard = () => {
     if (!dashboardData) return null;
 
-    switch (user?.role) {
+    const userRole = user?.role?.toUpperCase();
+
+    switch (userRole) {
       case 'ADMIN':
         return <AdminDashboard data={dashboardData} onRefresh={loadStats} />;
       case 'SELLER':

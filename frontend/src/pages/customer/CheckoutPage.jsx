@@ -12,6 +12,7 @@ import { useAuth } from '../../context/AuthContext';
 import { processPayment } from '../../services/paymentService';
 import ToastProvider, { useToast } from '../../components/common/Toast';
 import API from '../../services/api';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 function CheckoutContent() {
   const { cartItems, grandTotal, clearCart, itemCount } = useCart();
@@ -68,12 +69,25 @@ function CheckoutContent() {
         },
       };
 
+      const randomCode = (prefix = 'TRK', len = 8) => {
+        const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        let resStr = '';
+        for (let i = 0; i < len; i++) {
+          resStr += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return prefix ? `${prefix}-${resStr}-IN` : resStr;
+      };
+
       // Try API POST /api/orders or fallback to client simulation if offline
-      let orderId = `AMZ-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      let generatedTrackingCode = randomCode('TRK', 8);
+      let orderId = `AMZ-2026-${randomCode('', 6)}`;
       try {
         const res = await API.post('/orders', orderPayload);
         if (res.data?.order?._id) {
           orderId = res.data.order.orderNumber || res.data.order._id;
+          if (res.data.order.tracking?.trackingNumber) {
+            generatedTrackingCode = res.data.order.tracking.trackingNumber;
+          }
         }
       } catch (e) {
         console.warn('[API Order Sync Fallback] Operating offline checkout simulation');
@@ -89,12 +103,18 @@ function CheckoutContent() {
         status: 'PLACED',
         createdAt: new Date().toISOString(),
         tracking: {
-          trackingNumber: `TRK-${Math.floor(100000 + Math.random() * 900000)}-US`,
-          courier: 'E-Commerce Express',
+          trackingNumber: generatedTrackingCode,
+          courier: 'E-Commerce Express Logistics',
         },
       };
 
       localStorage.setItem(`order_${orderId}`, JSON.stringify(createdOrder));
+
+      console.log('\n============================================================');
+      console.log('🛒 ORDER PLACEMENT COMPLETE (ALPHANUMERIC CODES GENERATED):');
+      console.log(`🔑 ORDER REFERENCE CODE : ${orderId}`);
+      console.log(`🚚 TRACKING CODE        : ${generatedTrackingCode}`);
+      console.log('============================================================\n');
 
       // Clear cart
       clearCart();
@@ -246,7 +266,7 @@ function CheckoutContent() {
                         <span className="text-xs text-slate-500">Delivered tomorrow by 10:30 AM</span>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-slate-900">$14.99</span>
+                    <span className="text-xs font-bold text-slate-900">{formatCurrency(14.99)}</span>
                   </label>
                 </div>
 
@@ -331,7 +351,7 @@ function CheckoutContent() {
                           <span className="text-slate-500 block">Qty: {item.quantity}</span>
                         </div>
                       </div>
-                      <span className="font-mono font-bold text-slate-900">${((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}</span>
+                      <span className="font-mono font-bold text-slate-900">₹{((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
@@ -347,7 +367,7 @@ function CheckoutContent() {
                     onClick={handlePlaceOrder}
                     className="font-extrabold px-8 shadow-lg"
                   >
-                    Place Your Order (${grandTotal.toFixed(2)})
+                    Place Your Order (₹{grandTotal.toFixed(2)})
                   </Button>
                 </div>
               </div>
@@ -360,7 +380,7 @@ function CheckoutContent() {
             <div className="space-y-2 text-xs">
               <div className="flex justify-between text-slate-600">
                 <span>Items ({itemCount})</span>
-                <span className="font-semibold text-slate-900">${grandTotal.toFixed(2)}</span>
+                <span className="font-semibold text-slate-900">₹{grandTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Shipping</span>
@@ -368,7 +388,7 @@ function CheckoutContent() {
               </div>
               <div className="pt-2 border-t border-slate-200 flex justify-between items-baseline">
                 <span className="text-sm font-bold text-slate-900">Total</span>
-                <span className="text-xl font-black text-slate-900">${grandTotal.toFixed(2)}</span>
+                <span className="text-xl font-black text-slate-900">₹{grandTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>

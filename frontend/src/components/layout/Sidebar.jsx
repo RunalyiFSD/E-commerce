@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Package,
@@ -15,11 +15,21 @@ import {
   User,
   Settings,
   ShieldCheck,
+  LogOut,
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import Badge from '../common/Badge';
+import { useAuth } from '../../context/AuthContext';
 
 export function Sidebar({ role = 'CUSTOMER', className, onItemClick }) {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   const getRoleMenuItems = () => {
     switch (role) {
       case 'ADMIN':
@@ -30,8 +40,7 @@ export function Sidebar({ role = 'CUSTOMER', className, onItemClick }) {
           { label: 'Platform Products', path: '/dashboard/products', icon: Package },
           { label: 'Selling Categories', path: '/dashboard/categories', icon: Layers },
           { label: 'All Orders', path: '/dashboard/orders', icon: ShoppingBag },
-          { label: 'Active Deliveries', path: '/dashboard/deliveries/active', icon: Truck },
-          { label: 'Delayed / Failed', path: '/dashboard/deliveries/issues', icon: AlertTriangle },
+          { label: 'Active Deliveries', path: '/admin/deliveries', icon: Truck },
           { label: 'Audit Logs', path: '/dashboard/audit-logs', icon: ShieldCheck },
         ];
       case 'SELLER':
@@ -40,7 +49,7 @@ export function Sidebar({ role = 'CUSTOMER', className, onItemClick }) {
           { label: 'My Products', path: '/dashboard/seller/products', icon: Package },
           { label: 'Inventory Management', path: '/dashboard/seller/inventory', icon: Layers },
           { label: 'Seller Orders', path: '/dashboard/seller/orders', icon: ShoppingBag },
-          { label: 'Shipments & Fulfillment', path: '/dashboard/seller/fulfillment', icon: Truck },
+          { label: 'Shipments & Fulfillment', path: '/seller/fulfillment', icon: Truck },
           { label: 'Store Settings', path: '/dashboard/seller/settings', icon: Settings },
         ];
       case 'CUSTOMER':
@@ -48,7 +57,6 @@ export function Sidebar({ role = 'CUSTOMER', className, onItemClick }) {
         return [
           { label: 'Customer Dashboard', path: '/dashboard', icon: LayoutDashboard },
           { label: 'Order History', path: '/dashboard/customer/orders', icon: ShoppingBag },
-          { label: 'Active Deliveries', path: '/dashboard/customer/deliveries', icon: Truck },
           { label: 'Wishlist', path: '/wishlist', icon: Heart },
           { label: 'Saved Addresses', path: '/dashboard/customer/addresses', icon: MapPin },
           { label: 'Profile Settings', path: '/dashboard/customer/profile', icon: User },
@@ -102,12 +110,19 @@ export function Sidebar({ role = 'CUSTOMER', className, onItemClick }) {
         })}
       </nav>
 
-      {/* Sidebar Footer Info */}
-      <div className="p-4 border-t border-slate-100 bg-slate-50/60 text-[11px] text-slate-500">
+      {/* Sidebar Footer & Logout Action */}
+      <div className="p-4 border-t border-slate-100 bg-slate-50/60 flex flex-col gap-3 text-[11px] text-slate-500">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
           <span>Role RBAC Active</span>
         </div>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 font-bold rounded-lg border border-red-200 text-xs transition-colors cursor-pointer"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span>Log Out</span>
+        </button>
       </div>
     </aside>
   );

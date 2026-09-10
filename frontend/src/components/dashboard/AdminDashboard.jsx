@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import OrderStatusBadge from '../order/OrderStatusBadge';
 import FulfillmentModal from '../seller/FulfillmentModal';
 import Button from '../common/Button';
-import { ShieldCheck, DollarSign, Users, Store, Package, Layers, Truck, AlertTriangle, CheckCircle, ExternalLink } from 'lucide-react';
+import { formatCurrency, formatCompactCurrency } from '../../utils/formatCurrency';
+import { ShieldCheck, IndianRupee, Users, Store, Package, Layers, Truck, AlertTriangle, CheckCircle, ExternalLink, ShoppingBag } from 'lucide-react';
 
 export function AdminDashboard({ data, onRefresh }) {
   const { stats = {}, recentOrders = [] } = data;
@@ -28,7 +29,7 @@ export function AdminDashboard({ data, onRefresh }) {
             </div>
             <h1 className="text-2xl font-black">Platform Administration & Oversight</h1>
             <p className="text-xs text-slate-300 mt-1">
-              Platform-wide GMV analytics, user/seller ecosystem metrics, and delivery exception control.
+              Platform-wide GMV analytics, user/seller ecosystem metrics, category management (Rule 8), and delivery exception control.
             </p>
           </div>
 
@@ -42,14 +43,79 @@ export function AdminDashboard({ data, onRefresh }) {
         </div>
       </div>
 
+      {/* Admin Quick Action Hub */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <Link to="/dashboard/users" className="group">
+          <div className="bg-white border-2 border-slate-200 group-hover:border-amber-400 rounded-xl p-4 shadow-xs transition-all text-center flex flex-col items-center justify-center h-full">
+            <div className="p-2.5 bg-sky-50 text-sky-600 rounded-xl mb-2 group-hover:bg-sky-400 group-hover:text-slate-900 transition-colors">
+              <Users className="w-5 h-5" />
+            </div>
+            <span className="font-extrabold text-slate-900 text-xs">Manage Users</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">Customers & Roles</span>
+          </div>
+        </Link>
+
+        <Link to="/dashboard/sellers" className="group">
+          <div className="bg-white border-2 border-slate-200 group-hover:border-amber-400 rounded-xl p-4 shadow-xs transition-all text-center flex flex-col items-center justify-center h-full">
+            <div className="p-2.5 bg-amber-50 text-amber-600 rounded-xl mb-2 group-hover:bg-amber-400 group-hover:text-slate-900 transition-colors">
+              <Store className="w-5 h-5" />
+            </div>
+            <span className="font-extrabold text-slate-900 text-xs">Manage Sellers</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">Verification & Stores</span>
+          </div>
+        </Link>
+
+        <Link to="/dashboard/categories" className="group">
+          <div className="bg-white border-2 border-slate-200 group-hover:border-amber-400 rounded-xl p-4 shadow-xs transition-all text-center flex flex-col items-center justify-center h-full">
+            <div className="p-2.5 bg-purple-50 text-purple-600 rounded-xl mb-2 group-hover:bg-purple-400 group-hover:text-slate-900 transition-colors">
+              <Layers className="w-5 h-5" />
+            </div>
+            <span className="font-extrabold text-slate-900 text-xs">Categories (Rule 8)</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">Platform Catalog</span>
+          </div>
+        </Link>
+
+        <Link to="/dashboard/orders" className="group">
+          <div className="bg-white border-2 border-slate-200 group-hover:border-amber-400 rounded-xl p-4 shadow-xs transition-all text-center flex flex-col items-center justify-center h-full">
+            <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl mb-2 group-hover:bg-emerald-400 group-hover:text-slate-900 transition-colors">
+              <ShoppingBag className="w-5 h-5" />
+            </div>
+            <span className="font-extrabold text-slate-900 text-xs">Platform Orders</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">All Orders Oversight</span>
+          </div>
+        </Link>
+
+        <Link to="/admin/deliveries" className="group">
+          <div className="bg-white border-2 border-slate-200 group-hover:border-amber-400 rounded-xl p-4 shadow-xs transition-all text-center flex flex-col items-center justify-center h-full">
+            <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl mb-2 group-hover:bg-indigo-400 group-hover:text-slate-900 transition-colors">
+              <Truck className="w-5 h-5" />
+            </div>
+            <span className="font-extrabold text-slate-900 text-xs">Active Deliveries</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">Control Tower</span>
+          </div>
+        </Link>
+
+        <Link to="/dashboard/audit-logs" className="group">
+          <div className="bg-white border-2 border-slate-200 group-hover:border-amber-400 rounded-xl p-4 shadow-xs transition-all text-center flex flex-col items-center justify-center h-full">
+            <div className="p-2.5 bg-slate-100 text-slate-700 rounded-xl mb-2 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <span className="font-extrabold text-slate-900 text-xs">System Audit Logs</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">Security & Events</span>
+          </div>
+        </Link>
+      </div>
+
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] font-bold text-slate-500 uppercase">Platform GMV</span>
-            <DollarSign className="w-4 h-4 text-emerald-500" />
+            <IndianRupee className="w-4 h-4 text-emerald-500" />
           </div>
-          <p className="text-xl font-black text-emerald-700">${stats.totalGMV?.toFixed(2) || '0.00'}</p>
+          <p className="text-xl font-black text-emerald-700" title={formatCurrency(stats.totalGMV || 0)}>
+            {formatCompactCurrency(stats.totalGMV || 0)}
+          </p>
           <p className="text-[10px] text-slate-400">Total gross volume</p>
         </div>
 
@@ -146,8 +212,8 @@ export function AdminDashboard({ data, onRefresh }) {
           <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
             Recent Platform Orders
           </h3>
-          <Link to="/admin/deliveries" className="text-xs font-bold text-amber-600 hover:underline">
-            Control Tower &rarr;
+          <Link to="/dashboard/orders" className="text-xs font-bold text-amber-600 hover:underline">
+            View All Platform Orders &rarr;
           </Link>
         </div>
 

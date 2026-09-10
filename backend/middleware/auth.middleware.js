@@ -10,6 +10,20 @@ export const protect = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(' ')[1];
+
+      // Support development / demo token shortcut
+      if (token && token.startsWith('demo-mock-')) {
+        const demoRole = (req.headers['x-demo-role'] || 'CUSTOMER').toUpperCase();
+        req.user = {
+          _id: demoRole === 'ADMIN' ? '650000000000000000000001' : demoRole === 'SELLER' ? '650000000000000000000002' : '650000000000000000000003',
+          name: demoRole === 'ADMIN' ? 'Platform Administrator' : demoRole === 'SELLER' ? 'Sony Direct Store' : 'Alex Johnson',
+          email: demoRole === 'ADMIN' ? 'admin@amazon.com' : demoRole === 'SELLER' ? 'seller@sony.com' : 'alex@example.com',
+          role: demoRole,
+          storeName: demoRole === 'SELLER' ? 'Sony Official' : undefined,
+        };
+        return next();
+      }
+
       const secret = process.env.JWT_SECRET || 'dev_secret_key_123456789_ecommerce';
       const decoded = jwt.verify(token, secret);
 

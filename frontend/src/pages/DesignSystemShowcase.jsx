@@ -26,7 +26,7 @@ function ShowcaseContent() {
     { header: 'Order ID', key: 'id', render: (row) => <span className="font-bold text-slate-800">{row.id}</span> },
     { header: 'Customer', key: 'customer' },
     { header: 'Status', key: 'status', render: (row) => <OrderStatusBadge status={row.status} size="sm" /> },
-    { header: 'Amount', key: 'amount', render: (row) => <span className="font-mono font-semibold">${row.amount}</span> },
+    { header: 'Amount', key: 'amount', render: (row) => <span className="font-mono font-semibold">₹{row.amount}</span> },
   ];
 
   const demoTableData = [

@@ -4,10 +4,13 @@ import { Search, ShoppingCart, Heart, User, LogOut, Package, ShieldCheck, Store,
 import Badge from '../common/Badge';
 import Button from '../common/Button';
 import NotificationBell from '../common/NotificationBell';
+import { useAuth } from '../../context/AuthContext';
 
-export function Navbar({ user, cartCount = 0, wishlistCount = 0, onMobileMenuToggle }) {
+export function Navbar({ user: userProp, cartCount = 0, wishlistCount = 0, onMobileMenuToggle }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('All');
+  const { user: authUser, logout } = useAuth();
+  const user = userProp || authUser;
   const navigate = useNavigate();
 
   const handleSearchSubmit = (e) => {
@@ -15,6 +18,11 @@ export function Navbar({ user, cartCount = 0, wishlistCount = 0, onMobileMenuTog
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}&category=${category}`);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -135,13 +143,23 @@ export function Navbar({ user, cartCount = 0, wishlistCount = 0, onMobileMenuTog
           {/* Notification Bell for logged-in users */}
           {user && <NotificationBell />}
 
-          {/* Dashboard Link / Login */}
+          {/* Dashboard Link & Log Out / Sign In */}
           {user ? (
-            <Link to="/dashboard">
-              <Button variant="amber" size="sm">
-                Dashboard
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link to="/dashboard">
+                <Button variant="amber" size="sm">
+                  Dashboard
+                </Button>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1 text-slate-300 hover:text-red-400 hover:bg-slate-800/80 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                title="Log Out"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="hidden md:inline">Logout</span>
+              </button>
+            </div>
           ) : (
             <Link to="/login">
               <Button variant="outline" size="sm" className="text-white border-slate-600 hover:bg-slate-800">
@@ -163,6 +181,9 @@ export function Navbar({ user, cartCount = 0, wishlistCount = 0, onMobileMenuTog
           </Link>
           <Link to="/products?category=Fashion" className="hover:text-amber-400 transition-colors">
             Fashion
+          </Link>
+          <Link to="/products?category=Beauty%20%26%20Care" className="hover:text-amber-400 transition-colors">
+            Beauty & Care
           </Link>
           <Link to="/products?category=Deals" className="text-amber-400 font-bold hover:underline">
             Today's Deals

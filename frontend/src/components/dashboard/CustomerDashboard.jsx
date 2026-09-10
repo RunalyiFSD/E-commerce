@@ -136,7 +136,7 @@ export function CustomerDashboard({ data }) {
                     <OrderStatusBadge status={ord.status} size="sm" />
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    {ord.items?.length} {ord.items?.length === 1 ? 'item' : 'items'} &bull; Total: ${ord.pricing?.total?.toFixed(2)}
+                    {ord.items?.length} {ord.items?.length === 1 ? 'item' : 'items'} &bull; Total: ₹{ord.pricing?.total?.toFixed(2)}
                   </p>
                 </div>
 

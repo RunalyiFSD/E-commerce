@@ -27,11 +27,36 @@ function ProductListingContent() {
   const [cartCount, setCartCount] = useState(0);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
+  // Sync category & search query from URL params when navigation occurs
+  React.useEffect(() => {
+    if (searchParams.get('category')) {
+      setSelectedCategory(searchParams.get('category'));
+    }
+    if (searchParams.get('q') !== null) {
+      setSearchQuery(searchParams.get('q') || '');
+    }
+  }, [searchParams]);
+
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((p) => {
-      // Category Filter
-      if (selectedCategory !== 'All' && p.category !== selectedCategory) return false;
+      // Category & Today's Deals Filter
+      if (selectedCategory === 'Deals' || selectedCategory === 'Today\'s Deals') {
+        if (!p.isDeal && (!p.discountPrice || p.discountPrice >= p.price)) return false;
+      } else if (selectedCategory !== 'All') {
+        const catLower = selectedCategory.toLowerCase();
+        const pCatLower = (p.category || '').toLowerCase();
+        if (catLower === 'beauty' || catLower === 'beauty & care') {
+          if (!pCatLower.includes('beauty')) return false;
+        } else if (catLower === 'fashion') {
+          if (!pCatLower.includes('fashion')) return false;
+        } else if (catLower === 'electronics') {
+          if (!pCatLower.includes('electronics')) return false;
+        } else if (p.category !== selectedCategory) {
+          return false;
+        }
+      }
+
       // Search Query Filter
       if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase()) && !p.description.toLowerCase().includes(searchQuery.toLowerCase())) return false;
       // Max Price Filter
@@ -180,7 +205,7 @@ function ProductListingContent() {
             <div>
               <div className="flex justify-between text-xs font-semibold text-slate-700 mb-2">
                 <span>Max Price:</span>
-                <span className="font-extrabold text-slate-900">${maxPrice}</span>
+                <span className="font-extrabold text-slate-900">₹{maxPrice}</span>
               </div>
               <input
                 type="range"

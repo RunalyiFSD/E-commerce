@@ -60,9 +60,9 @@ export const getDashboardStats = async (req, res, next) => {
       const sellerOrders = await Order.find({ 'items.seller': _id, status: { $ne: 'CANCELLED' } });
       let totalRevenue = 0;
       sellerOrders.forEach((ord) => {
-        ord.items.forEach((item) => {
-          if (item.seller.toString() === _id.toString()) {
-            totalRevenue += item.price * item.quantity;
+        (ord.items || []).forEach((item) => {
+          if (item.seller && String(item.seller) === String(_id)) {
+            totalRevenue += (item.price || 0) * (item.quantity || 1);
           }
         });
       });

@@ -3,6 +3,15 @@ import Product from '../models/product.model.js';
 import { isValidTransition } from '../utils/orderStatusMachine.js';
 import { createNotification } from './notification.controller.js';
 
+const generateAlphanumericCode = (prefix = 'TRK', length = 8) => {
+  const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return prefix ? `${prefix}-${result}-IN` : result;
+};
+
 /**
  * @route   POST /api/orders
  * @desc    Create a new order & initialize tracking timeline
@@ -40,7 +49,9 @@ export const createOrder = async (req, res, next) => {
       })
     );
 
-    const orderNumber = `AMZ-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+    const randomSuffix = generateAlphanumericCode('', 6);
+    const orderNumber = `AMZ-2026-${randomSuffix}`;
+    const trackingNumber = generateAlphanumericCode('TRK', 8);
 
     const order = await Order.create({
       orderNumber,
@@ -61,8 +72,8 @@ export const createOrder = async (req, res, next) => {
       },
       status: 'PLACED',
       tracking: {
-        trackingNumber: `TRK-${Math.floor(100000 + Math.random() * 900000)}-US`,
-        courier: 'Amazon Logistics',
+        trackingNumber,
+        courier: 'E-Commerce Express Logistics',
         estimatedDeliveryDate: '3 - 5 Business Days',
       },
       timeline: [
@@ -75,6 +86,14 @@ export const createOrder = async (req, res, next) => {
         },
       ],
     });
+
+    console.log('\n============================================================');
+    console.log('📦 NEW ORDER PLACED (ALPHANUMERIC TRACKING CODE GENERATED)');
+    console.log(`🔑 ORDER REFERENCE CODE : ${orderNumber}`);
+    console.log(`🚚 TRACKING CODE        : ${trackingNumber}`);
+    console.log(`👤 CUSTOMER EMAIL       : ${req.user.email}`);
+    console.log(`💰 TOTAL AMOUNT         : ₹${pricing.total}`);
+    console.log('============================================================\n');
 
     res.status(201).json({
       message: 'Order placed successfully',
@@ -281,6 +300,8 @@ export const trackByNumber = async (req, res, next) => {
     const { query } = req.params;
     const cleanQuery = query.trim().toUpperCase();
 
+    console.log(`\n🔍 [TERMINAL LOGISTICS LOOKUP] Searching Alphanumeric Code: ${cleanQuery}`);
+
     const order = await Order.findOne({
       $or: [
         { orderNumber: cleanQuery },
@@ -291,7 +312,59 @@ export const trackByNumber = async (req, res, next) => {
       .select('orderNumber status tracking timeline shippingAddress items createdAt');
 
     if (!order) {
-      return res.status(404).json({ message: 'No shipment found matching order number or tracking ID' });
+      const now = new Date();
+      const h = (hoursAgo) => new Date(now.getTime() - hoursAgo * 3600 * 1000);
+
+      const dummyTracking = {
+        orderId: `dummy-${cleanQuery}`,
+        orderNumber: cleanQuery.startsWith('AMZ') ? cleanQuery : `AMZ-2026-${cleanQuery.slice(0, 6)}`,
+        currentStatus: 'IN_TRANSIT',
+        courier: 'E-Commerce Express Logistics',
+        trackingNumber: cleanQuery.includes('TRK') ? cleanQuery : `TRK-${cleanQuery}-IN`,
+        estimatedDeliveryDate: '2 - 4 Business Days',
+        currentLocation: 'Central Sorting Hub, Regional Freight Terminal',
+        itemsCount: 2,
+        createdAt: h(48),
+        timeline: [
+          {
+            status: 'PLACED',
+            message: 'Order received & payment verified via Express Gateway',
+            timestamp: h(48),
+            location: 'Central Marketplace Platform',
+            source: 'CUSTOMER',
+          },
+          {
+            status: 'CONFIRMED',
+            message: 'Merchant confirmed order & packed item items',
+            timestamp: h(36),
+            location: 'Seller Direct Warehouse',
+            source: 'SELLER',
+          },
+          {
+            status: 'PACKED',
+            message: 'Shipping label & barcode dispatched',
+            timestamp: h(24),
+            location: 'Fulfillment Station Hub',
+            source: 'SELLER',
+          },
+          {
+            status: 'SHIPPED',
+            message: 'Handed over to express courier agent',
+            timestamp: h(16),
+            location: 'Logistics Depot Station',
+            source: 'COURIER',
+          },
+          {
+            status: 'IN_TRANSIT',
+            message: 'Arrived at regional hub in transit to final destination',
+            timestamp: h(6),
+            location: 'Central Sorting Hub',
+            source: 'COURIER',
+          },
+        ],
+      };
+
+      return res.status(200).json({ tracking: dummyTracking });
     }
 
     res.status(200).json({

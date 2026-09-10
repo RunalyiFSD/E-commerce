@@ -3,6 +3,7 @@ import Modal from '../common/Modal';
 import Button from '../common/Button';
 import notificationService from '../../services/notificationService';
 import { useToast } from '../common/Toast';
+import { formatCurrency } from '../../utils/formatCurrency';
 import { RotateCcw, CheckCircle, XCircle, DollarSign } from 'lucide-react';
 
 export function ReturnReviewModal({ isOpen, onClose, order, onReviewProcessed }) {
@@ -45,7 +46,7 @@ export function ReturnReviewModal({ isOpen, onClose, order, onReviewProcessed })
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2">
           <div className="flex items-center justify-between font-bold text-slate-900 border-b border-slate-200/80 pb-2">
             <span>Customer: {order.customer?.name || order.customer?.email}</span>
-            <span className="text-amber-700 font-black">${order.pricing?.total?.toFixed(2)}</span>
+            <span className="text-amber-700 font-black">{formatCurrency(order.pricing?.total || 0)}</span>
           </div>
 
           <div className="text-slate-600">

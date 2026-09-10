@@ -94,11 +94,11 @@ export function ProductCard({
           <div>
             <div className="flex items-baseline gap-1.5">
               <span className="text-base font-extrabold text-slate-900">
-                ${hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
+                ₹{hasDiscount ? product.discountPrice.toFixed(2) : product.price.toFixed(2)}
               </span>
               {hasDiscount && (
                 <span className="text-xs text-slate-400 line-through">
-                  ${product.price.toFixed(2)}
+                  ₹{product.price.toFixed(2)}
                 </span>
               )}
             </div>
