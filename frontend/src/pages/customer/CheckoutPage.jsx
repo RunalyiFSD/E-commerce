@@ -81,9 +81,11 @@ function CheckoutContent() {
       // Try API POST /api/orders or fallback to client simulation if offline
       let generatedTrackingCode = randomCode('TRK', 8);
       let orderId = `AMZ-2026-${randomCode('', 6)}`;
+      let backendOrder = null;
       try {
         const res = await API.post('/orders', orderPayload);
         if (res.data?.order?._id) {
+          backendOrder = res.data.order;
           orderId = res.data.order.orderNumber || res.data.order._id;
           if (res.data.order.tracking?.trackingNumber) {
             generatedTrackingCode = res.data.order.tracking.trackingNumber;

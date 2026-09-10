@@ -5,6 +5,7 @@ import Badge from '../common/Badge';
 import Button from '../common/Button';
 import NotificationBell from '../common/NotificationBell';
 import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
 
 export function Navbar({ user: userProp, cartCount = 0, wishlistCount = 0, onMobileMenuToggle }) {
   const [searchQuery, setSearchQuery] = useState('');

@@ -317,9 +317,17 @@ The workflows assume `frontend/` and `backend/` directories and must be aligned 
 ### Force-Pushed Codebase to `dev` Branch
 
 - Switched local repository branch to `dev`.
-- Executed force push (`git push -u origin dev --force`) to remote repository `https://github.com/RunalyiFSD/E-commerce.git`.
-- Replaced existing remote data on `dev` branch with the latest codebase.
-- Both `main` and `dev` branches are now fully synchronized on GitHub.
+## Entry 021
+
+**Date:** 2026-09-10
+
+### Fixed Frontend Missing `useCart` Reference in Navbar
+
+- **Problem:** User ran `npm run dev` in frontend and backend, but encountered a blank screen / error when opening `http://localhost:3000/`.
+- **Root Cause:** In [`frontend/src/components/layout/Navbar.jsx`](file:///c:/Users/salun/OneDrive/Desktop/E-Commerce/frontend/src/components/layout/Navbar.jsx), `useCart()` was invoked on line 16, but `useCart` was not imported from `../../context/CartContext`, causing a runtime `ReferenceError: useCart is not defined` that prevented the React tree from mounting.
+- **Resolution:** Added `import { useCart } from '../../context/CartContext';` to `Navbar.jsx`.
+- **Verification:** Verified via live browser automated tests that `http://localhost:3000/` loads cleanly with 0 console errors, interactive navbar controls, product catalog, deals, and category navigation functioning properly.
+
 
 
 
